@@ -8,4 +8,6 @@ use react-beautiful-dnd
 <h3>🔔 selected change styled function</h3> <br>
 <img src="https://velog.velcdn.com/images/fearofcod/post/3f86d4c0-83fc-495e-b2db-a787716ff677/image.gif"> <br>
 
-<a href="https://velog.io/@fearofcod/React-Beautiful-DnD">My Blog</a>
+<a href="https://velog.io/@fearofcod/React-Beautiful-DnD">My Blog Beautiful DnD</a>
+<a href="https://velog.io/@fearofcod/React-DnD">My Blog React DnD</a>
+
