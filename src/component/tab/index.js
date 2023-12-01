@@ -154,6 +154,10 @@ const Tab = () => {
     );
   };
 
+  const onChangeContent = (content) => {
+    console.debug("content", content);
+  };
+
   return (
     <div>
       <div className="tab-panel">
@@ -163,6 +167,7 @@ const Tab = () => {
           tabAdd={tabAdd}
           tabRemove={tabRemove}
           selectIndex={selectIndex}
+          setContent={setContent}
         />
       </div>
       <div className="content-panel"></div>

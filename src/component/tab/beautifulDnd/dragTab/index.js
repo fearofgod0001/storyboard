@@ -50,7 +50,7 @@ export const DragTab = ({ tab, index, tabRemove, onChange, selectIndex }) => {
             {tab.LABEL}
           </div>
           <div className="removeButton" onClick={tabRemove}>
-            x
+            <i class="fa-solid fa-xmark"></i>
           </div>
         </div>
       </div>

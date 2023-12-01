@@ -2,8 +2,9 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
 import { StyledRayTab } from "./styled";
 import { DragTab } from "./dragTab";
+import update from "immutability-helper";
 
-const RayTab = ({ value, onChange, tabAdd, tabRemove }) => {
+const RayTab = ({ value, onChange, tabAdd, tabRemove, setContent }) => {
   const [_tabsInfo, setTabsInfo] = useState();
   const [selectIndex, setSelectIndex] = useState("all");
 
@@ -23,6 +24,11 @@ const RayTab = ({ value, onChange, tabAdd, tabRemove }) => {
     const [movedTab] = reorderedTabs.splice(result.source.index, 1);
     reorderedTabs.splice(result.destination.index, 0, movedTab);
     setTabsInfo(reorderedTabs);
+    setContent((prev) =>
+      update(prev, {
+        tabInfos: { $set: reorderedTabs },
+      })
+    );
   };
 
   const onSelectIndex = (index) => {
@@ -31,7 +37,11 @@ const RayTab = ({ value, onChange, tabAdd, tabRemove }) => {
 
   return (
     <StyledRayTab>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext
+        onDragEnd={(e) => {
+          onDragEnd(e);
+        }}
+      >
         <Droppable droppableId="_tabsInfo" direction="horizontal">
           {(provided) => (
             <div
@@ -75,7 +85,7 @@ const RayTab = ({ value, onChange, tabAdd, tabRemove }) => {
         </Droppable>
       </DragDropContext>
       <div className="tabItemPlus" onClick={tabAdd}>
-        +
+        <i class="fa-solid fa-plus"></i>
       </div>
     </StyledRayTab>
   );
