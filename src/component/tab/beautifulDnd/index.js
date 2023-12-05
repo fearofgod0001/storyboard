@@ -1,94 +1,155 @@
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
+import { DragTab } from "./drag-tab";
 import { StyledRayTab } from "./styled";
-import { DragTab } from "./dragTab";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import update from "immutability-helper";
+import { StyledButton } from "../styledElement";
 
-const RayTab = ({ value, onChange, tabAdd, tabRemove, setContent }) => {
-  const [_tabsInfo, setTabsInfo] = useState();
-  const [selectIndex, setSelectIndex] = useState("all");
+export const RayTab = ({
+  tabList,
+  selectedIndex,
+  onChange,
+  onSelectedTab,
+  onDragEnd,
+  onAddTab,
+  onRemoveTab,
+  onSave,
+}) => {
+  const [_tabList, setTabList] = useState();
+
+  const [_selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    if (value) {
-      setTabsInfo(value);
+    if (selectedIndex) {
+      setSelectedIndex(selectedIndex);
     }
-  }, [value]);
+  }, [selectedIndex]);
 
-  const onDragEnd = (result) => {
-    console.debug(result);
+  useEffect(() => {
+    if (tabList) {
+      setTabList(tabList);
+    }
+  }, [tabList]);
+
+  const _onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
+    const dragIdx = result.source.index;
+    const destIdx = result.destination.index;
 
-    const reorderedTabs = Array.from(_tabsInfo);
-    const [movedTab] = reorderedTabs.splice(result.source.index, 1);
-    reorderedTabs.splice(result.destination.index, 0, movedTab);
-    setTabsInfo(reorderedTabs);
-    setContent((prev) =>
+    setTabList((prev) => {
+      const nTab = prev[dragIdx];
+      return update(prev, {
+        $splice: [
+          [dragIdx, 1],
+          [destIdx, 0, { ...nTab }],
+        ],
+      });
+    });
+    setSelectedIndex(destIdx);
+    onSelectedTab(destIdx, result.draggableId);
+    typeof onDragEnd === "function" && onDragEnd(result);
+  };
+
+  const onChangeLabel = (text, index, tabKey) => {
+    setTabList((prev) =>
       update(prev, {
-        tabInfos: { $set: reorderedTabs },
+        [index]: { LABEL: { $set: text } },
       })
     );
   };
 
-  const onSelectIndex = (index) => {
-    setSelectIndex(index);
+  const onComplete = () => {
+    onChange(_tabList);
+  };
+
+  const _onSelectedTab = (index, tabKey) => {
+    setSelectedIndex(index);
+    onSelectedTab(index, tabKey);
+  };
+
+  const _onAddTab = () => {
+    const idx = _tabList.length;
+    setSelectedIndex(idx);
+    onAddTab(idx);
+  };
+
+  const _onRemoveTab = (index, tabKey) => {
+    if (_selectedIndex === index) {
+      const endPos = _tabList.length - 1;
+      if (endPos > index) {
+        setSelectedIndex(index);
+      } else {
+        const nIdx = index - 1;
+        console.debug(" endPos == ", nIdx);
+        setSelectedIndex(nIdx);
+        onSelectedTab(index, tabKey);
+      }
+    }
+    onRemoveTab(index, tabKey);
   };
 
   return (
     <StyledRayTab>
-      <DragDropContext
-        onDragEnd={(e) => {
-          onDragEnd(e);
-        }}
-      >
-        <Droppable droppableId="_tabsInfo" direction="horizontal">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="horizontal-tabs-container"
-            >
-              {_tabsInfo &&
-                _tabsInfo.map((tab, index) => (
-                  <Draggable
-                    key={tab.TAB_KEY}
-                    draggableId={tab.TAB_KEY}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+      <div className="tab-panel">
+        <DragDropContext onDragEnd={_onDragEnd}>
+          <Droppable droppableId="_tabsInfo" direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="drop-panel"
+              >
+                {_tabList &&
+                  _tabList.map((tab, index) => (
+                    <Draggable
+                      key={tab.TAB_KEY}
+                      index={index}
+                      draggableId={tab.TAB_KEY}
+                    >
+                      {(provided) => (
                         <div
-                          className="clickDragTab"
-                          onClick={() => onSelectIndex(index)}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
                         >
-                          <DragTab
-                            onChange={onChange}
-                            selectTabKey={tab.TAB_KEY}
-                            tab={tab}
-                            index={index}
-                            tabRemove={tabRemove}
-                            selectIndex={selectIndex}
-                          />
+                          <div
+                            className={`dragtab-panel ${
+                              _selectedIndex === index && "on"
+                            }`}
+                          >
+                            <div className="dragtab-top"></div>
+                            <DragTab
+                              key={`dragitem-${index}`}
+                              index={index}
+                              selectedIndex={_selectedIndex}
+                              label={tab.LABEL}
+                              tabKey={tab.TAB_KEY}
+                              onSelectedTab={_onSelectedTab}
+                              onRemoveTab={_onRemoveTab}
+                              onChangeLabel={onChangeLabel}
+                              onComplete={onComplete}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <div className="tabItemPlus" onClick={tabAdd}>
-        <i class="fa-solid fa-plus"></i>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <div className="tabItemPlus" onClick={_onAddTab}>
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </div>
+      <div className="btn-panel">
+        <StyledButton className="btn-primary" onClick={onSave}>
+          저장
+        </StyledButton>
       </div>
     </StyledRayTab>
   );
 };
-
-export default RayTab;

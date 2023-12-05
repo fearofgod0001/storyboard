@@ -1,5 +1,4 @@
 import { StyledTabsPanel } from "./styled";
-
 import RayTab from "../beautifulDnd";
 
 const TabPanel = ({ tabInfos, onChange, tabAdd, tabRemove, setContent }) => {

@@ -1,58 +1,94 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Input } from "antd";
 import { StyledRayDragTab } from "./styled";
+import { TabLabel } from "./tab-label";
 
-export const DragTab = ({ tab, index, tabRemove, onChange, selectIndex }) => {
-  const [editedLabel, setEditedLabel] = useState(tab.LABEL);
-  const [changeIndex, setChangeIndex] = useState();
+// const AutoWidthInput = ({ value, onChange }) => {
+//   return (
+//     <div>
+//       <StyledInput placeholder="이름 또는 애칭" spellCheck={false} contentEditable />
+//     </div>
+//   );
+// };
 
-  const ref = useRef(null);
-  //더블클릭시 이름 변경 실행
-  const handleTabClick = (index) => {
-    setChangeIndex(index);
+export const DragTab = ({
+  label,
+  tabKey,
+  index,
+  selectedIndex,
+  onComplete,
+  onRemoveTab,
+  onSelectedTab,
+  onChangeLabel,
+}) => {
+  const [isEdit, setEdit] = useState(false);
+  const tabRef = useRef(null);
+
+  const onTabDoubleClick = () => {
+    setEdit(true);
   };
-  //아웃 포커싱될 때 이름변경 해제
-  const onBlur = () => {
-    setChangeIndex();
-    setEditedLabel(tab.LABEL);
-  };
+
   //엔터 클릭시 이름변경 해제
-  const handleOnKeyDown = (e) => {
+  const onKeyDown = (e) => {
     if (e.key === "Enter") {
-      setChangeIndex();
-      tab.LABEL = editedLabel;
+      setEdit(false);
+      onComplete();
     }
   };
 
-  return index === changeIndex ? (
+  const onChangeEditLabel = (value) => {
+    onChangeLabel(value, index, tabKey);
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      function onClickOutside(event) {
+        if (tabRef.current && !tabRef.current.contains(event.target)) {
+          // 다른 영역을 클릭한 경우에만 동작을 수행합니다.
+          setEdit(false);
+          onComplete();
+        }
+      }
+      document.addEventListener("click", onClickOutside);
+      return () => {
+        document.removeEventListener("click", onClickOutside);
+      };
+    }
+  }, [isEdit]);
+
+  return (
     <StyledRayDragTab>
-      <Input
-        value={editedLabel}
-        style={{ width: `${editedLabel.length * 10}px`, minWidth: "100px" }}
-        onChange={(e) => setEditedLabel(e.target.value)}
-        onBlur={onBlur}
-        onKeyDown={handleOnKeyDown}
-      />
-    </StyledRayDragTab>
-  ) : (
-    <StyledRayDragTab active={selectIndex === index}>
       <div
-        className="dragTabZone"
-        ref={ref}
-        onClick={() => onChange(tab.TAB_KEY)}
+        className="tab-label-panel"
+        ref={tabRef}
+        onClick={() => onSelectedTab(index, tabKey)}
+        onDoubleClick={() => onTabDoubleClick()}
       >
-        <div className="hoverTopBorder"> </div>
-        <div style={{ display: "flex", marginBottom: "8px", marginTop: "8px" }}>
-          <div
-            className="labelName"
-            onDoubleClick={() => handleTabClick(index)}
-          >
-            {tab.LABEL}
+        {isEdit ? (
+          <div className="labelName">
+            <TabLabel
+              placeholder="tab name"
+              value={label}
+              onChange={onChangeEditLabel}
+              onKeyDowns={onKeyDown}
+            />
+            {/* <Input
+              placeholder="tab name"
+              ref={inputRef}
+              value={label}
+              style={{ width: `${label?.length * 10}px`, minWidth: '50px' }}
+              onChange={onChangeEditLabel}
+              onBlur={onBlur}
+              onKeyDown={OnKeyDown}
+            /> */}
           </div>
-          <div className="removeButton" onClick={tabRemove}>
-            <i class="fa-solid fa-xmark"></i>
-          </div>
-        </div>
+        ) : (
+          <div className="labelName">{label || "no title"}</div>
+        )}
+      </div>
+
+      <div className="btn-remove" onClick={() => onRemoveTab(index, tabKey)}>
+        <i class="fa-solid fa-xmark"></i>
       </div>
     </StyledRayDragTab>
   );
