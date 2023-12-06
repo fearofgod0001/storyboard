@@ -1,9 +1,8 @@
 import { useEffect, useState, forwardRef } from "react";
-import { DragTab } from "./drag-tab";
+import { DragTab } from "./dragTab";
 import { StyledRayTab } from "./styled";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import update from "immutability-helper";
-import { StyledButton } from "../styledElement";
 
 export const RayTab = ({
   tabList,
@@ -146,9 +145,9 @@ export const RayTab = ({
         </div>
       </div>
       <div className="btn-panel">
-        <StyledButton className="btn-primary" onClick={onSave}>
+        <button className="btn-primary" onClick={onSave}>
           저장
-        </StyledButton>
+        </button>
       </div>
     </StyledRayTab>
   );

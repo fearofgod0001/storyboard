@@ -2,6 +2,7 @@ import { useState } from "react";
 import update from "immutability-helper";
 import TabPanel from "./tab-pannel";
 import uuid from "react-uuid";
+import Numbering from "./numbering";
 
 const init = {
   tabInfos: [
@@ -154,13 +155,9 @@ const Tab = () => {
     );
   };
 
-  const onChangeContent = (content) => {
-    console.debug("content", content);
-  };
-
   return (
     <div>
-      <div className="tab-panel">
+      {/* <div className="tab-panel">
         <TabPanel
           tabInfos={content.tabInfos}
           onChange={onTabChange}
@@ -170,7 +167,8 @@ const Tab = () => {
           setContent={setContent}
         />
       </div>
-      <div className="content-panel"></div>
+      <div className="content-panel"></div> */}
+      <Numbering />
     </div>
   );
 };
