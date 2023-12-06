@@ -26,10 +26,29 @@ const Numbering = () => {
     "\u3161", // 'ㅣ'
   ];
 
-  const generateKoreanNumbering = () => {
-    const character = String.fromCharCode(parseInt("\u3131"));
-    console.log("character ===>", character);
-  };
+  function generateKoreanNumbering(count) {
+    const baseCode = 44032; // '가'의 유니코드 값
+    const result = [];
+
+    for (let i = 0; i < 16; i++) {
+      const leadingConsonantIndex = (i % 28) + 1; // 초성 인덱스 계산
+      const vowelIndex = ((i / 28) % 21) + 1; // 중성 인덱스 계산
+      const trailingConsonantIndex = i / 28 / 21 + 1; // 종성 인덱스 계산
+
+      const leadingConsonantCode = baseCode + leadingConsonantIndex * 21 * 28; // 초성 코드 계산
+      const vowelCode = baseCode + vowelIndex * 28; // 중성 코드 계산
+      const trailingConsonantCode = baseCode + trailingConsonantIndex; // 종성 코드 계산
+
+      const koreanNumber = String.fromCharCode(
+        leadingConsonantCode,
+        vowelCode,
+        trailingConsonantCode
+      );
+      result.push(koreanNumber);
+    }
+    console.debug(result);
+    return result;
+  }
 
   return (
     <div>
