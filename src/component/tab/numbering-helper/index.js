@@ -115,22 +115,22 @@ export const numberingData = ({ mContent, tabKey }) => {
 
   let indexList = {};
 
-  //자식 List를 찾을 함수 PRNT_TOCID와 Numbering을 받아서 indexList에 넣는다.
-  const findChildrenList = (TOCID, Numbering) => {
-    //전체 리스트에서 PRNT_TOCID 와 입력받은 TOCID를 filter하여 자기 자식list를 찾는다
+  //자식 List를 찾을 함수 TOCID 받아서 indexList에 넣는다.
+  const findChildrenList = (TOCID) => {
+    //전체 리스트에서 TOCID와 PRNT_TOCID를 filter하여 자기 자식list를 찾는다
     const childrenList = MLC_TOCLIST[tabKey].filter(
       (f) => f.PRNT_TOCID === TOCID
     );
-    //찾은 리스트를 map으로 돌려 하나하나 Numbering을 해준다.
+    //찾은 자식list map으로 돌려 하나하나 Numbering을 해준다.
     childrenList.map((item, index) => {
       // indexList에 새로운 객체를 넣는다.
       indexList = Object.assign(indexList, {
-        [item.TOCID]: { Numbering: Numbering, TITLE: item.TITLE },
+        [item.TOCID]: { Numbering: index + 1, TITLE: item.TITLE },
       });
       //childrenList 각각의 배열의 TOCID값이 자식 List를 가졌는지 확인한다.
       return MLC_TOCLIST[tabKey].filter((f) => f.PRNT_TOCID === item.TOCID)
         .length > 0
-        ? findChildrenList(item.TOCID, Numbering + 1)
+        ? findChildrenList(item.TOCID)
         : [];
     });
   };
