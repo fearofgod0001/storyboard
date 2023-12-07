@@ -124,9 +124,29 @@ export const numberingData = ({ mContent, tabKey }) => {
     //찾은 자식list map으로 돌려 하나하나 Numbering을 해준다.
     childrenList.map((item, index) => {
       // indexList에 새로운 객체를 넣는다.
-      indexList = Object.assign(indexList, {
-        [item.TOCID]: { Numbering: index + 1, TITLE: item.TITLE },
-      });
+      switch (item.INDENT) {
+        case 1:
+          indexList = Object.assign(indexList, {
+            [item.TOCID]: {
+              Numbering: ROMAN_NUM[index + 1],
+              TITLE: item.TITLE,
+            },
+          });
+          break;
+        case 3:
+          indexList = Object.assign(indexList, {
+            [item.TOCID]: {
+              Numbering: HANGLE_NUM[index + 1],
+              TITLE: item.TITLE,
+            },
+          });
+          break;
+        default:
+          indexList = Object.assign(indexList, {
+            [item.TOCID]: { Numbering: index + 1, TITLE: item.TITLE },
+          });
+          break;
+      }
       //childrenList 각각의 배열의 TOCID값이 자식 List를 가졌는지 확인한다.
       return MLC_TOCLIST[tabKey].filter((f) => f.PRNT_TOCID === item.TOCID)
         .length > 0
