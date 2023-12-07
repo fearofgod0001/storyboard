@@ -14,44 +14,7 @@ const RightPanel = ({ mContent, onChange }) => {
     // onChange(nContent);
   }, []);
 
-  return (
-    <StyledRightPanel>
-      <div className="header">
-        <MdSettings />
-        매뉴얼 설정
-      </div>
-      <div className="options">
-        <div className="option-item">
-          <PublishInfo
-            fieldKey={"MLC_PUB_DTTM"}
-            fieldValue={MLC_PUB_DTTM}
-            onChange={_onChange}
-          />
-        </div>
-        <div className="option-item">
-          <ExpiredInfo
-            fieldKey={"MLC_EXPIRED_DTTM"}
-            fieldValue={MLC_EXPIRED_DTTM}
-            onChange={_onChange}
-          />
-        </div>
-        <div className="option-item">
-          <DisplayInfo
-            fieldKey={"MLC_DISPLAY"}
-            fieldValue={MLC_DISPLAY}
-            onChange={_onChange}
-          />
-        </div>
-        <div className="nomargin">
-          <AuthInfo
-            fieldKey={"MLC_DISPLAY"}
-            fieldValue={MLC_DISPLAY}
-            onChange={_onChange}
-          />
-        </div>
-      </div>
-    </StyledRightPanel>
-  );
+  return <StyledRightPanel></StyledRightPanel>;
 };
 
 export default RightPanel;
