@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { StyledRayTab } from "./styled";
 import { DragTab } from "./dragTab";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -16,6 +16,10 @@ export const RayTab = ({
 }) => {
   const [_tabList, setTabList] = useState();
   const [_selectedIndex, setSelectedIndex] = useState(0);
+  const [isOverFlow, setIsOverFlow] = useState();
+
+  const containerRef = useRef(null);
+  const autoDragRef = useRef(null);
 
   console.debug(tabList);
 
@@ -34,6 +38,16 @@ export const RayTab = ({
   useEffect(() => {
     if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
       onChange(_tabList);
+    }
+
+    //overFLow 를 감지한다.
+    const container = containerRef.current;
+    if (container) {
+      const _isOverFlow = container.scrollWidth > container.clientWidth;
+      setIsOverFlow(_isOverFlow);
+      if (_isOverFlow) {
+        autoDragRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }, [_tabList, onChange]);
 
@@ -126,7 +140,10 @@ export const RayTab = ({
                               _selectedIndex === index && "on"
                             }`}
                           >
-                            <div className="dragtab-top"></div>
+                            <div
+                              className="dragtab-top"
+                              ref={autoDragRef}
+                            ></div>
                             <DragTab
                               key={`dragitem-${index}`}
                               index={index}
