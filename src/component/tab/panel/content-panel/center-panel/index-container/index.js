@@ -1,6 +1,6 @@
-import ManualIndex from './manual-index-chapter';
-import ManulIndexdSection from './manul-indexd-section';
-import ManualIndexSubSection from './manual-index-sub-section';
+import ManualIndex from "./manual-index-chapter";
+import ManulIndexdSection from "./manul-indexd-section";
+import ManualIndexSubSection from "./manual-index-sub-section";
 
 const IndexContainer = ({
   numberingList,

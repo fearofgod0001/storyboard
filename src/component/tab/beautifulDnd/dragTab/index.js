@@ -1,15 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Input } from "antd";
 import { StyledRayDragTab } from "./styled";
 import { TabLabel } from "./tab-label";
-
-// const AutoWidthInput = ({ value, onChange }) => {
-//   return (
-//     <div>
-//       <StyledInput placeholder="이름 또는 애칭" spellCheck={false} contentEditable />
-//     </div>
-//   );
-// };
 
 export const DragTab = ({
   label,

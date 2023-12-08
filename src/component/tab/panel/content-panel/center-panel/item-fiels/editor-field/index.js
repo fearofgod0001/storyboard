@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import FroalaEditor from '@/components/editor/FroalaEditor';
-import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
-import { StyledEdit } from './styled';
-import { StyledEmptyEditor } from './styled';
+import { useState } from "react";
+
+import { StyledEdit } from "./styled";
+import { StyledEmptyEditor } from "./styled";
 
 export const EditorField = ({ offset, fieldId, content, onChangeContent }) => {
   const [isEdit, setEdit] = useState(false);
@@ -22,7 +21,7 @@ export const EditorField = ({ offset, fieldId, content, onChangeContent }) => {
   return (
     <StyledEdit>
       {isEdit ? (
-        <FroalaEditor model={content} editKey={fieldId} onEdit={onEdit} onBlur={onBlur} onModelChange={onModelChange} />
+        <div>test</div>
       ) : (
         <EditorviewField modal={content} onEdit={onEdit} />
       )}
@@ -31,10 +30,8 @@ export const EditorField = ({ offset, fieldId, content, onChangeContent }) => {
 };
 
 const EditorviewField = ({ modal, onEdit }) => {
-  return modal && modal !== '' ? (
-    <div onClick={onEdit}>
-      <FroalaEditorView model={modal} />
-    </div>
+  return modal && modal !== "" ? (
+    <div onClick={onEdit}>test2</div>
   ) : (
     <EmptyEditor onEdit={onEdit} />
   );

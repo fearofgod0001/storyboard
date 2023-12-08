@@ -1,5 +1,5 @@
-import HANGLE_NUM from "./hangle-num";
-import ROMAN_NUM from "./roman-num";
+import { HANGLE_NUM } from "./hangle-num";
+import { ROMAN_NUM } from "./roman-num";
 export const numberingData = ({ mContent, tabKey }) => {
   const { MLC_TOCLIST } = mContent;
 

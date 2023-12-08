@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import update from "immutability-helper";
 import { StyledManual } from "./styled";
-import { TabPanel, ContentPanel } from "./panel";
+import ContentPanel from "./panel/content-panel";
+import TabPanel from "./panel/tab-panel";
 import { numberingData } from "./panel/numbering-helper";
 import uuid from "react-uuid";
 import { message } from "antd";
@@ -36,7 +37,7 @@ const initTocItem = {
   INDENT: 1,
 };
 
-const Edit = ({ onSave }) => {
+const EditComponent = () => {
   const [tabKey, setTabKey] = useState("default");
   const [mContent, setContent] = useState(init);
   const [numberingList, setNumberingList] = useState();
@@ -161,10 +162,6 @@ const Edit = ({ onSave }) => {
     );
   };
 
-  const _onSave = (e) => {
-    onSave({ ...mContent }, e);
-  };
-
   //우클릭으로 manual Index정보인 item
   //새로 추가할 manual의 기준이 되는 정보
   const onAddManualDownIndex = (item) => {
@@ -271,11 +268,9 @@ const Edit = ({ onSave }) => {
           onChange={onChangeTabInfo}
           selectedTabKey={tabKey}
           onSelectedTab={onSelectedTab}
-          onSave={(e) => {
-            _onSave(e);
-          }}
         />
       </div>
+
       <div className="content-panel">
         <ContentPanel
           mContent={mContent}
@@ -296,4 +291,4 @@ const Edit = ({ onSave }) => {
   );
 };
 
-export default Edit;
+export default EditComponent;

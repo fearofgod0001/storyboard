@@ -1,6 +1,6 @@
-import { useEffect, useState, forwardRef } from "react";
-import { DragTab } from "./dragTab";
+import { useEffect, useState } from "react";
 import { StyledRayTab } from "./styled";
+import { DragTab } from "./dragTab";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import update from "immutability-helper";
 
@@ -15,8 +15,9 @@ export const RayTab = ({
   onSave,
 }) => {
   const [_tabList, setTabList] = useState();
-
   const [_selectedIndex, setSelectedIndex] = useState(0);
+
+  console.debug(tabList);
 
   useEffect(() => {
     if (selectedIndex) {
@@ -29,6 +30,12 @@ export const RayTab = ({
       setTabList(tabList);
     }
   }, [tabList]);
+
+  useEffect(() => {
+    if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
+      onChange(_tabList);
+    }
+  }, [_tabList, onChange]);
 
   const _onDragEnd = (result) => {
     if (!result.destination) {
@@ -48,7 +55,7 @@ export const RayTab = ({
     });
     setSelectedIndex(destIdx);
     onSelectedTab(destIdx, result.draggableId);
-    typeof onDragEnd === "function" && onDragEnd(result);
+    typeof onDragEnd === "function" && onDragEnd(dragIdx, destIdx);
   };
 
   const onChangeLabel = (text, index, tabKey) => {
@@ -59,9 +66,9 @@ export const RayTab = ({
     );
   };
 
-  const onComplete = () => {
-    onChange(_tabList);
-  };
+  // const onComplete = () => {
+  //   onChange(_tabList);
+  // };
 
   const _onSelectedTab = (index, tabKey) => {
     setSelectedIndex(index);
@@ -75,6 +82,7 @@ export const RayTab = ({
   };
 
   const _onRemoveTab = (index, tabKey) => {
+    console.debug("_onRemoveTab", index, tabKey);
     if (_selectedIndex === index) {
       const endPos = _tabList.length - 1;
       if (endPos > index) {
@@ -128,7 +136,7 @@ export const RayTab = ({
                               onSelectedTab={_onSelectedTab}
                               onRemoveTab={_onRemoveTab}
                               onChangeLabel={onChangeLabel}
-                              onComplete={onComplete}
+                              // onComplete={onComplete}
                             />
                           </div>
                         </div>
@@ -145,9 +153,7 @@ export const RayTab = ({
         </div>
       </div>
       <div className="btn-panel">
-        <button className="btn-primary" onClick={onSave}>
-          저장
-        </button>
+        <button onClick={onSave}>저장</button>
       </div>
     </StyledRayTab>
   );

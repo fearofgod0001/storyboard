@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
 import EditTree from "./edit-tree";
 import StyledLeftPanel from "./styled";
-import useResizeObserver from "use-resize-observer";
-import uuid from "react-uuid";
 
 const LeftPanel = ({
   tocListAsTree,

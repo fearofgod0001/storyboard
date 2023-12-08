@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import IndexTitleField from '../../item-fiels/index-title-field';
-import IndexNumbringField from '../../item-fiels/index-numbering-field';
-import { FieldLoader } from '../../item-fiels';
-import { StyledIndexTitle } from './styled';
+import React, { useState } from "react";
+import IndexTitleField from "../../item-fiels/index-title-field";
+import IndexNumbringField from "../../item-fiels/index-numbering-field";
+import { FieldLoader } from "../../item-fiels";
+import { StyledIndexTitle } from "./styled";
 
 const ManualIndex = ({
   numberingList,

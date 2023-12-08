@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import IndexNumbringField from '../../item-fiels/index-numbering-field';
-import IndexTitleField from '../../item-fiels/index-title-field';
-import { FieldLoader } from '../../item-fiels';
-import { StyledIndexSectionTitle } from './styled';
+import React, { useState, useEffect } from "react";
+import IndexNumbringField from "../../item-fiels/index-numbering-field";
+import IndexTitleField from "../../item-fiels/index-title-field";
+import { FieldLoader } from "../../item-fiels";
+import { StyledIndexSectionTitle } from "./styled";
 const ManualIndexSection = ({
   numberingList,
   IndexList = [],
@@ -33,7 +33,7 @@ const ManualIndexSection = ({
 
   return (
     <StyledIndexSectionTitle>
-      <div key={`item-${item.TOCID}`} style={{ marginLeft: '15px' }}>
+      <div key={`item-${item.TOCID}`} style={{ marginLeft: "15px" }}>
         <div className="content-title">
           <IndexTitleField
             initValue={item.TITLE}

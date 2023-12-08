@@ -1,18 +1,34 @@
 import { StyledTabsPanel } from "./styled";
-import { RayTab } from "../../beautifulDnd/index";
+import { RayTab } from "../../beautifulDnd";
 
-const TabPanel = ({ tabInfos, onChange, tabAdd, tabRemove, setContent }) => {
+const TabPanel = ({
+  tabInfos,
+  tabKey,
+  onSelectedTab,
+  onChange,
+  onDragEnd,
+  onChangeTab,
+  onAddTab,
+  onRemoveTab,
+  onSave,
+}) => {
   return (
     <StyledTabsPanel>
       <div className="tab-icon">
-        <i class="fa-solid fa-window-restore"></i>
+        {/* <i className="fa-regular fa-window-restore"></i> */}
       </div>
       <RayTab
+        tabList={tabInfos}
+        onSelectedTab={onSelectedTab}
+        onAddTab={onAddTab}
+        onRemoveTab={onRemoveTab}
         onChange={onChange}
-        value={tabInfos}
-        tabAdd={tabAdd}
-        tabRemove={tabRemove}
-        setContent={setContent}
+        onSave={onSave}
+        onDragEnd={onDragEnd}
+        // value={tabInfos}
+        // tabKey={tabKey}
+        // onChangeTab={onChangeTab}
+        // onTabRemove={onTabRemove}
       />
     </StyledTabsPanel>
   );
