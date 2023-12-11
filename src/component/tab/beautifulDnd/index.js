@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from "react";
+import { DragTab } from "./drag-tab";
 import { StyledRayTab } from "./styled";
-import { DragTab } from "./dragTab";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import update from "immutability-helper";
+import { StyledButton } from "../styledElement";
 
 export const RayTab = ({
   tabList,
@@ -20,8 +21,6 @@ export const RayTab = ({
 
   const containerRef = useRef(null);
   const autoDragRef = useRef(null);
-
-  console.debug(tabList);
 
   useEffect(() => {
     if (selectedIndex) {
@@ -42,11 +41,12 @@ export const RayTab = ({
 
     //overFLow 를 감지한다.
     const container = containerRef.current;
+
     if (container) {
       const _isOverFlow = container.scrollWidth > container.clientWidth;
       setIsOverFlow(_isOverFlow);
       if (_isOverFlow) {
-        autoDragRef.current.scrollIntoView({ behavior: "smooth" });
+        autoDragRef[_tabList.length - 1].scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [_tabList, onChange]);
@@ -85,6 +85,8 @@ export const RayTab = ({
   // };
 
   const _onSelectedTab = (index, tabKey) => {
+    //ref로 스크롤이 이동함
+    autoDragRef[index].scrollIntoView({ behavior: "smooth" });
     setSelectedIndex(index);
     onSelectedTab(index, tabKey);
   };
@@ -96,7 +98,6 @@ export const RayTab = ({
   };
 
   const _onRemoveTab = (index, tabKey) => {
-    console.debug("_onRemoveTab", index, tabKey);
     if (_selectedIndex === index) {
       const endPos = _tabList.length - 1;
       if (endPos > index) {
@@ -111,66 +112,79 @@ export const RayTab = ({
     onRemoveTab(index, tabKey);
   };
 
+  const onShowTabList = () => {
+    console.debug("onShowTabList");
+  };
+
   return (
     <StyledRayTab>
-      <div className="tab-panel">
-        <DragDropContext onDragEnd={_onDragEnd}>
-          <Droppable droppableId="_tabsInfo" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="drop-panel"
-              >
-                {_tabList &&
-                  _tabList.map((tab, index) => (
-                    <Draggable
-                      key={tab.TAB_KEY}
-                      index={index}
-                      draggableId={tab.TAB_KEY}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
+      <div className="content-panel">
+        <div className="tab-panel" ref={containerRef}>
+          <DragDropContext onDragEnd={_onDragEnd}>
+            <Droppable droppableId="_tabsInfo" direction="horizontal">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="drop-panel"
+                >
+                  {_tabList &&
+                    _tabList.map((tab, index) => (
+                      <Draggable
+                        key={tab.TAB_KEY}
+                        index={index}
+                        draggableId={tab.TAB_KEY}
+                      >
+                        {(provided) => (
                           <div
-                            className={`dragtab-panel ${
-                              _selectedIndex === index && "on"
-                            }`}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
                           >
                             <div
-                              className="dragtab-top"
-                              ref={autoDragRef}
-                            ></div>
-                            <DragTab
-                              key={`dragitem-${index}`}
-                              index={index}
-                              selectedIndex={_selectedIndex}
-                              label={tab.LABEL}
-                              tabKey={tab.TAB_KEY}
-                              onSelectedTab={_onSelectedTab}
-                              onRemoveTab={_onRemoveTab}
-                              onChangeLabel={onChangeLabel}
-                              // onComplete={onComplete}
-                            />
+                              className={`dragtab-panel ${
+                                _selectedIndex === index && "on"
+                              }`}
+                            >
+                              <div
+                                className="dragtab-top"
+                                ref={(el) => (autoDragRef[index] = el)}
+                              ></div>
+                              <DragTab
+                                key={`dragitem-${index}`}
+                                index={index}
+                                selectedIndex={_selectedIndex}
+                                label={tab.LABEL}
+                                tabKey={tab.TAB_KEY}
+                                onSelectedTab={_onSelectedTab}
+                                onRemoveTab={_onRemoveTab}
+                                onChangeLabel={onChangeLabel}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+        {isOverFlow && isOverFlow === true && (
+          <div className="showInvisibleTab" onClick={onShowTabList}>
+            <i className="fa-solid fa-ellipsis-vertical"></i>
+          </div>
+        )}
+
         <div className="tabItemPlus" onClick={_onAddTab}>
-          <i class="fa-solid fa-plus"></i>
+          <i className="fa-solid fa-plus"></i>
         </div>
       </div>
       <div className="btn-panel">
-        <button onClick={onSave}>저장</button>
+        <StyledButton className="btn-primary" onClick={onSave}>
+          저장
+        </StyledButton>
       </div>
     </StyledRayTab>
   );
