@@ -4,6 +4,7 @@ import { StyledRayTab } from "./styled";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import update from "immutability-helper";
 import { StyledButton } from "../styledElement";
+import { Dropdown, Space } from "antd";
 
 export const RayTab = ({
   tabList,
@@ -18,6 +19,7 @@ export const RayTab = ({
   const [_tabList, setTabList] = useState();
   const [_selectedIndex, setSelectedIndex] = useState(0);
   const [isOverFlow, setIsOverFlow] = useState();
+  const [_overFLowList, setOverFlowList] = useState([]);
 
   const containerRef = useRef(null);
   const autoDragRef = useRef(null);
@@ -35,21 +37,47 @@ export const RayTab = ({
   }, [tabList]);
 
   useEffect(() => {
-    if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
-      onChange(_tabList);
-    }
+    // if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
+    //   onChange(_tabList);
+    // }
 
     //overFLow 를 감지한다.
     const container = containerRef.current;
-
+    //overFlow시 선택한 index로 이동
     if (container) {
       const _isOverFlow = container.scrollWidth > container.clientWidth;
       setIsOverFlow(_isOverFlow);
       if (_isOverFlow) {
-        autoDragRef[_tabList.length - 1].scrollIntoView({ behavior: "smooth" });
+        autoDragRef[_selectedIndex]?.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, [_tabList, onChange]);
+
+    //
+    const overFLowList = [];
+
+    Object.values(autoDragRef).map((item, index) => {
+      const tabX = item?.getBoundingClientRect().x;
+      if (tabX < 30 || tabX > container.clientWidth + 30) {
+        overFLowList.push({
+          index: index,
+          label: item.innerText,
+        });
+      }
+    });
+
+    setOverFlowList(overFLowList);
+
+    // console.debug('autoDragRef', autoDragRef[_selectedIndex]?.getBoundingClientRect());
+    // //tab bar의 전체 길이를 구함
+    // //autoDragRef를 map으로 돌면서 getBoundingClientRect() 값의 left가
+    // //containerRef.clientWidth + 30 보다 높게
+    // //tab bar의 LEFT값
+    // console.debug('tab bar의 LEFT값', container.scrollLeft);
+    // console.debug('선택한 TAB LEFT값', autoDragRef[_selectedIndex]?.offsetLeft);
+    // //tab bar RIGHT값
+    // console.debug('tab bar RIGHT값', container.clientWidth + 30);
+    // console.debug('선택한 TAB RIGHT값', autoDragRef[_selectedIndex]?.offsetLeft);
+  }, [window.innerWidth, _tabList]);
 
   const _onDragEnd = (result) => {
     if (!result.destination) {
@@ -80,9 +108,9 @@ export const RayTab = ({
     );
   };
 
-  // const onComplete = () => {
-  //   onChange(_tabList);
-  // };
+  const onComplete = () => {
+    onChange(_tabList);
+  };
 
   const _onSelectedTab = (index, tabKey) => {
     //ref로 스크롤이 이동함
@@ -113,7 +141,7 @@ export const RayTab = ({
   };
 
   const onShowTabList = () => {
-    console.debug("onShowTabList");
+    console.debug("onShowTabList", _overFLowList);
   };
 
   return (
@@ -137,7 +165,8 @@ export const RayTab = ({
                       >
                         {(provided) => (
                           <div
-                            ref={provided.innerRef}
+                            ref={(el) => (autoDragRef[index] = el)}
+                            {...provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
@@ -146,10 +175,7 @@ export const RayTab = ({
                                 _selectedIndex === index && "on"
                               }`}
                             >
-                              <div
-                                className="dragtab-top"
-                                ref={(el) => (autoDragRef[index] = el)}
-                              ></div>
+                              <div className="dragtab-top"></div>
                               <DragTab
                                 key={`dragitem-${index}`}
                                 index={index}
@@ -159,6 +185,7 @@ export const RayTab = ({
                                 onSelectedTab={_onSelectedTab}
                                 onRemoveTab={_onRemoveTab}
                                 onChangeLabel={onChangeLabel}
+                                onComplete={onComplete}
                               />
                             </div>
                           </div>
