@@ -13,21 +13,46 @@ export const StyledRayTab = styled.div`
     right: 20rem;
     background-color: #dee1e6;
     min-width: 80px;
+    max-height: 650px;
     z-index: 1000;
     border-radius: 2px;
-    .dropDowmItem {
-      border-radius: 2px;
-      height: 40px;
-      width: 100%;
+    box-shadow: -3px 3px 7px 0px #eee;
+    overflow-y: scroll;
+
+    .dropDownBox {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #dee1e6;
-      cursor: pointer;
-      &:hover {
-        background-color: white;
-        color: blue;
+      .dropDown-top {
+        width: 2px;
+        background-color: #dee1e6;
       }
+      .dropDowmItem {
+        border-radius: 2px;
+        width: 100%;
+        height: 2.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #dee1e6;
+        cursor: pointer;
+      }
+      &:hover {
+        .dropDown-top {
+          background-color: #4491e0;
+        }
+        .dropDowmItem {
+          background-color: white;
+          color: #4491e0;
+        }
+      }
+    }
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #2f3542;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #dee1e6;
     }
   }
 

@@ -19,7 +19,7 @@ export const RayTab = ({
 }) => {
   const [_tabList, setTabList] = useState();
   const [_selectedIndex, setSelectedIndex] = useState(0);
-  const [_overFLowList, setOverFlowList] = useState([]);
+  const [_overFlowList, setOverFlowList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
@@ -38,37 +38,42 @@ export const RayTab = ({
     }
   }, [tabList]);
 
-  //디바운스
+  //innerWidth를 0.3초마다 변경하는 디바운스
   const debouncehandleResize = debounce(() => {
     setWindowSize(window.innerWidth);
   }, 300);
 
-  useEffect(() => {
-    if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
-      onChange(_tabList);
-    }
+  const onDropDownTabs = () => {
+    console.debug("실행2");
+    //전체 tab크기를 설정함.
     const container = containerRef.current;
-    if (_overFLowList.length > 0) {
-      autoDragRef[_selectedIndex]?.scrollIntoView({ behavior: "smooth" });
-    }
+    //현재 선택한 index 값으로 scroll 이동
+    autoDragRef[_selectedIndex]?.scrollIntoView({ behavior: "smooth" });
     //각 value의 x값의 위치를 구하여 overflow되면 list에 넣는다.
-    const overFLowList = [];
+    const overFlowList = [];
     Object.values(autoDragRef).map((item, index) => {
       const tabX = item?.getBoundingClientRect().x;
       if (tabX < 10 || tabX > container.clientWidth - 30) {
-        overFLowList.push({
+        overFlowList.push({
           index: index,
           label: item.innerText,
           key: _tabList[index].TAB_KEY,
         });
       }
     });
-    setOverFlowList(overFLowList);
+    setOverFlowList(overFlowList);
+  };
 
-    console.debug("windowSize", windowSize);
-  }, [_tabList, windowSize]);
+  useEffect(() => {
+    // if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
+    //   onChange(_tabList);
+    // }
 
-  //계속 새로운 핸들러로 만들고 unmount시 제거해준다
+    onDropDownTabs();
+    console.debug("실행1");
+  }, [_tabList, windowSize, _selectedIndex]);
+
+  //디바운스를 계속 새로운 핸들러로 만들고 unmount시 제거해준다
   useEffect(() => {
     window.addEventListener("resize", debouncehandleResize);
     return () => {
@@ -110,10 +115,11 @@ export const RayTab = ({
   // };
 
   const _onSelectedTab = (index, tabKey) => {
-    //ref로 스크롤이 이동함
-    autoDragRef[_selectedIndex].scrollIntoView({ behavior: "smooth" });
+    //선택한 index로로 스크롤이 이동함
     setSelectedIndex(index);
     onSelectedTab(index, tabKey);
+    onDropDownTabs();
+    console.debug("실행2-");
   };
 
   const _onAddTab = () => {
@@ -198,7 +204,7 @@ export const RayTab = ({
           </DragDropContext>
         </div>
 
-        {_overFLowList?.length > 0 && (
+        {_overFlowList?.length > 0 && (
           <div className="showInvisibleTab" onClick={onShowTabList}>
             <i className="fa-solid fa-ellipsis-vertical"></i>
           </div>
@@ -206,14 +212,17 @@ export const RayTab = ({
 
         <div className="overFlowDropDown">
           {isOpen === true &&
-            _overFLowList.map((item, index) => {
+            _overFlowList.map((item, index) => {
               return (
-                <div
-                  className="dropDowmItem"
-                  key={index}
-                  onClick={() => _onSelectedTab(item.index, item.key)}
-                >
-                  {item.label}
+                <div className="dropDownBox">
+                  <div className="dropDown-top"></div>
+                  <div
+                    className="dropDowmItem"
+                    key={index}
+                    onClick={() => _onSelectedTab(item.index, item.key)}
+                  >
+                    {item.label}
+                  </div>
                 </div>
               );
             })}

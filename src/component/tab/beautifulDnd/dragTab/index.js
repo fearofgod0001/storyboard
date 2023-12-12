@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { StyledRayDragTab } from "./styled";
 import { TabLabel } from "./tab-label";
+import { Popconfirm } from "antd";
 
 export const DragTab = ({
   label,
@@ -45,7 +46,7 @@ export const DragTab = ({
         document.removeEventListener("click", onClickOutside);
       };
     }
-  }, [isEdit]);
+  }, [isEdit, onComplete]);
 
   return (
     <StyledRayDragTab>
@@ -60,27 +61,27 @@ export const DragTab = ({
             <TabLabel
               placeholder="tab name"
               value={label}
+              isFocus={isEdit}
               onChange={onChangeEditLabel}
               onKeyDowns={onKeyDown}
             />
-            {/* <Input
-              placeholder="tab name"
-              ref={inputRef}
-              value={label}
-              style={{ width: `${label?.length * 10}px`, minWidth: '50px' }}
-              onChange={onChangeEditLabel}
-              onBlur={onBlur}
-              onKeyDown={OnKeyDown}
-            /> */}
           </div>
         ) : (
           <div className="labelName">{label || "no title"}</div>
         )}
       </div>
 
-      <div className="btn-remove" onClick={() => onRemoveTab(index, tabKey)}>
-        <i class="fa-solid fa-xmark"></i>
-      </div>
+      <Popconfirm
+        title="삭제하시겠습니까?"
+        placement="bottom"
+        onConfirm={() => onRemoveTab(index, tabKey)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <div className="btn-remove">
+          <i className="fa-solid fa-xmark"></i>
+        </div>
+      </Popconfirm>
     </StyledRayDragTab>
   );
 };
