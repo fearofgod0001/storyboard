@@ -29,7 +29,7 @@ export const RayTab = ({
 
   const containerRef = useRef(null);
   const tabItemRef = useRef([]);
-  const tabRef = useRef(null);
+  const tabRef = useRef();
 
   useEffect(() => {
     if (selectedIndex) {
@@ -101,7 +101,7 @@ export const RayTab = ({
 
   const onScroll = debounce(() => {
     setScroll(uuid());
-  }, 300);
+  }, 20);
 
   const _onDragEnd = (result) => {
     if (!result.destination) {
@@ -167,13 +167,13 @@ export const RayTab = ({
 
   //overFlow된 tabList를 보여준다.
   const onShowTabList = () => {
-    setIsOpen(!isOpen);
+    console.debug("onShowTabList");
+    setIsOpen(true);
   };
 
   useEffect(() => {
     if (isOpen) {
       function onClickOutsideDrop(event) {
-        console.debug("event", event.target);
         if (tabRef.current && !tabRef.current.contains(event.target)) {
           setIsOpen(false);
         }
@@ -251,26 +251,25 @@ export const RayTab = ({
             ref={tabRef}
           >
             <i className="fa-solid fa-ellipsis-vertical"></i>
+            <div className="overFlowDropDown">
+              {isOpen === true &&
+                overFlowList?.map((item, _index) => {
+                  return (
+                    <div className="dropDownBox">
+                      <div className="dropDown-top"></div>
+                      <div
+                        className="dropDowmItem"
+                        key={_index}
+                        onClick={() => _onSelectedTab(item.index, item.TAB_KEY)}
+                      >
+                        {item.LABEL ?? "no title"}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         )}
-
-        <div className="overFlowDropDown">
-          {isOpen === true &&
-            overFlowList?.map((item, _index) => {
-              return (
-                <div className="dropDownBox">
-                  <div className="dropDown-top"></div>
-                  <div
-                    className="dropDowmItem"
-                    key={_index}
-                    onClick={() => _onSelectedTab(item.index, item.TAB_KEY)}
-                  >
-                    {item.LABEL ?? "no title"}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
 
         <div className="tabItemPlus" onClick={_onAddTab}>
           <i className="fa-solid fa-plus"></i>
