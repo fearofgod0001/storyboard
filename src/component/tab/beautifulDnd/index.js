@@ -48,8 +48,6 @@ export const RayTab = ({
     setWindowSize(window.innerWidth);
   }, 300);
 
-  console.debug("실행 ");
-
   useEffect(() => {
     //값을 저장하는 onChange
     if (_tabList && JSON.stringify(_tabList) !== JSON.stringify(tabList)) {
@@ -177,14 +175,7 @@ export const RayTab = ({
       function onClickOutsideDrop(event) {
         console.debug("event", event.target);
         if (tabRef.current && !tabRef.current.contains(event.target)) {
-          console.debug("tabRef.current", tabRef.current);
-          console.debug(
-            "tabRef.current",
-            tabRef.current.contains(event.target)
-          );
-          // 다른 영역을 클릭한 경우에만 동작을 수행합니다.
-          // setIsOpen(false);
-          // onComplete();
+          setIsOpen(false);
         }
       }
       document.addEventListener("click", onClickOutsideDrop);
@@ -219,7 +210,6 @@ export const RayTab = ({
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            // onClick={() => _onSelectedTab(tab.TAB_KEY, index)}
                           >
                             <div
                               className={`dragtab-panel ${
@@ -241,7 +231,6 @@ export const RayTab = ({
                                 onSelectedTab={_onSelectedTab}
                                 onRemoveTab={_onRemoveTab}
                                 onChangeLabel={onChangeLabel}
-                                // onComplete={onComplete}
                               />
                             </div>
                           </div>
@@ -256,12 +245,16 @@ export const RayTab = ({
         </div>
 
         {isOverFlow && isOverFlow === true && (
-          <div className="showInvisibleTab" onClick={onShowTabList}>
+          <div
+            className="showInvisibleTab"
+            onClick={onShowTabList}
+            ref={tabRef}
+          >
             <i className="fa-solid fa-ellipsis-vertical"></i>
           </div>
         )}
 
-        <div className="overFlowDropDown" ref={tabRef}>
+        <div className="overFlowDropDown">
           {isOpen === true &&
             overFlowList?.map((item, _index) => {
               return (

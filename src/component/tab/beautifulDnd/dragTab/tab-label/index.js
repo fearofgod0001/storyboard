@@ -1,7 +1,14 @@
 import { useEffect, useRef } from "react";
 import { Input } from "./styled";
+import debounce from "lodash/debounce";
 
-export const TabLabel = ({ value, isFocus, onChange, onKeyDowns }) => {
+export const TabLabel = ({
+  placeholder,
+  value,
+  isFocus,
+  onChange,
+  onKeyDowns,
+}) => {
   const defaultValue = useRef(value);
   const tabRef = useRef();
 
@@ -11,18 +18,18 @@ export const TabLabel = ({ value, isFocus, onChange, onKeyDowns }) => {
     }
   }, [isFocus, tabRef]);
 
-  const _onChange = (event) => {
+  const debounceOnChange = debounce((event) => {
     if (typeof onChange === "function") {
-      onChange(event.target.innerHTML);
+      onChange(event.target.innerText);
     }
-  };
+  }, 0);
 
   return (
     <Input
       contentEditable
       ref={tabRef}
-      onInput={_onChange}
-      onKeyDown={onKeyDowns}
+      onInput={debounceOnChange}
+      onKeyUp={onKeyDowns}
     >
       {defaultValue.current}
     </Input>
