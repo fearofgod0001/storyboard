@@ -92,6 +92,8 @@ const Edit = ({ onSave }) => {
     const nTocItems = {
       fieldId: `item-${manualIndexKey}`,
       fieldComp: "editor-field",
+      fieldVisible: true,
+      TOCID: tocKey,
     };
 
     setContent((prev) =>
@@ -204,6 +206,8 @@ const Edit = ({ onSave }) => {
     const nTocItems = {
       fieldId: `item-${manualIndexKey}`,
       fieldComp: "editor-field",
+      fieldVisible: true,
+      TOCID: tocKey,
       content: undefined,
     };
 
@@ -244,6 +248,8 @@ const Edit = ({ onSave }) => {
       const nTocItems = {
         fieldId: `item-${manualIndexKey}`,
         fieldComp: "editor-field",
+        fieldVisible: true,
+        TOCID: tocKey,
         content: undefined,
       };
 
@@ -305,9 +311,49 @@ const Edit = ({ onSave }) => {
     }
   }, [form]);
 
+  const onFinishFailed = ({ values, errorFields, outofDate }) => {
+    console.debug("### values ===>", values);
+    console.debug("### errorFields ===>", errorFields);
+    console.debug("### outofDate ===>", outofDate);
+  };
+
+  console.debug(mContent);
+
+  const onChangeContentVisible = (item, isOpen) => {
+    console.debug(item);
+    // console.debug(mContent.MLC_TOC_CONTENTINFO[tabKey][item.TOCID][0]);
+
+    setContent((prev) =>
+      update(prev, {
+        MLC_TOC_CONTENTINFO: {
+          [tabKey]: {
+            [item.TOCID]: {
+              $splice: [
+                [
+                  0,
+                  1,
+                  {
+                    ...prev.MLC_TOC_CONTENTINFO[tabKey][item.TOCID][0],
+                    fieldVisible: isOpen,
+                  },
+                ],
+              ],
+            },
+          },
+        },
+      })
+    );
+  };
+
   return (
     <StyledManual>
-      <Form name="frm" form={form} layout="vertical" onFinish={onFinish}>
+      <Form
+        name="frm"
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
         <div className="tab-panel">
           <TabPanel
             tabInfos={mContent.MLC_TAB_INFO}
@@ -338,6 +384,7 @@ const Edit = ({ onSave }) => {
             onAddManualDownIndex={onAddManualDownIndex}
             onAddManualNextIndex={onAddManualNextIndex}
             onDeleteManualIndex={onDeleteManualIndex}
+            onChangeContentVisible={onChangeContentVisible}
           />
         </div>
       </Form>
