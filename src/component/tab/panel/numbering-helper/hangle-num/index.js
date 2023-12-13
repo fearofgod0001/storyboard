@@ -1,4 +1,4 @@
-export const HANGLE_NUM = {
+const HANGLE_NUM = {
   1: "가",
   2: "나",
   3: "다",
@@ -42,3 +42,4 @@ export const HANGLE_NUM = {
   41: "포",
   42: "호",
 };
+export default HANGLE_NUM;

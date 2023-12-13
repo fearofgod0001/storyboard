@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { message, Form } from "antd";
+import uuid from "react-uuid";
+import dayjs from "dayjs";
 import update from "immutability-helper";
 import { StyledManual } from "./styled";
-import ContentPanel from "./panel/content-panel";
-import TabPanel from "./panel/tab-panel";
-import { numberingData } from "./panel/numbering-helper";
-import uuid from "react-uuid";
-import { message } from "antd";
+import { TabPanel, ContentPanel } from "./panel";
+import { makeToc } from "./panel/numbering-helper";
 
 const init = {
   MLC_TITLE: undefined,
@@ -13,8 +13,26 @@ const init = {
   MLC_VERSION: 1,
   MLC_STATUS: "init",
   MLC_DISPLAY: "Y",
-  MLC_PUB_DTTM: undefined,
-  MLC_EXPIRED_DTTM: undefined,
+  MLC_PUB_DTTM: dayjs().format("YYYY-MM-DD"),
+  MLC_EXPIRED_DTTM: "9999-12-31",
+  MLC_MGR: [],
+  MLC_EDT: {
+    userList: [],
+    deptList: [],
+    groupList: [],
+  },
+  MLC_SEC: {
+    userList: [],
+    deptList: [
+      {
+        DEPT_ID: 0,
+        PRNT_DEPT_ID: -1,
+        DEPT_CD: " ",
+        DEPT_NM: "부서관리",
+      },
+    ],
+    groupList: [],
+  },
   MLC_TAB_INFO: [
     {
       TAB_KEY: "default",
@@ -28,6 +46,7 @@ const init = {
   MLC_TOC_CONTENTINFO: {
     default: {},
   },
+  MLC_DATA: undefined,
 };
 
 const initTocItem = {
@@ -37,15 +56,18 @@ const initTocItem = {
   INDENT: 1,
 };
 
-const EditComponent = () => {
+const Edit = ({ onSave }) => {
   const [tabKey, setTabKey] = useState("default");
   const [mContent, setContent] = useState(init);
   const [numberingList, setNumberingList] = useState();
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    const list = numberingData({ mContent, tabKey });
-    setNumberingList(list);
-  }, [mContent]);
+    const list = makeToc({ mContent, tabKey });
+    if (list) {
+      setNumberingList((prev) => ({ ...prev, ...list }));
+    }
+  }, [mContent, tabKey]);
 
   const onChangeTree = (sortTree) => {
     const { MLC_TOCLIST } = mContent;
@@ -65,11 +87,11 @@ const EditComponent = () => {
 
   const onCreateIndex = () => {
     const manualIndexKey = uuid();
-    const nToc = Object.assign({ ...initTocItem }, { TOCID: manualIndexKey });
+    const tocKey = `toc-${manualIndexKey}`;
+    const nToc = Object.assign({ ...initTocItem }, { TOCID: tocKey });
     const nTocItems = {
       fieldId: `item-${manualIndexKey}`,
       fieldComp: "editor-field",
-      content: undefined,
     };
 
     setContent((prev) =>
@@ -79,7 +101,7 @@ const EditComponent = () => {
         },
 
         MLC_TOC_CONTENTINFO: {
-          [tabKey]: { $merge: { [manualIndexKey]: [{ ...nTocItems }] } },
+          [tabKey]: { $merge: { [tocKey]: [{ ...nTocItems }] } },
         },
       })
     );
@@ -166,16 +188,17 @@ const EditComponent = () => {
   //새로 추가할 manual의 기준이 되는 정보
   const onAddManualDownIndex = (item) => {
     const manualIndexKey = uuid();
+    const tocKey = `toc-${manualIndexKey}`;
     // 기준이 되는 manual의 index (해당 값의 + 1 이 추가할 위치의 index가 된다.
-    const prntIndex = mContent.MLC_TOCLIST[tabKey].findIndex(
-      (f) => f.TOCID === item.TOCID
-    );
 
-    const inputIndex = prntIndex + 1;
+    const lastChildern = numberingList[item.TOCID].lastChildIndex;
+    const lastIndex = mContent.MLC_TOCLIST[tabKey].findIndex(
+      (f) => f.TOCID === lastChildern
+    );
 
     const nToc = Object.assign(
       { ...initTocItem },
-      { TOCID: manualIndexKey, PRNT_TOCID: item.TOCID, INDENT: item.INDENT + 1 }
+      { TOCID: tocKey, PRNT_TOCID: item.TOCID, INDENT: item.INDENT + 1 }
     );
 
     const nTocItems = {
@@ -187,11 +210,11 @@ const EditComponent = () => {
     setContent((prev) =>
       update(prev, {
         MLC_TOCLIST: {
-          [tabKey]: { $splice: [[inputIndex, 0, nToc]] },
+          [tabKey]: { $splice: [[lastIndex + 1, 0, nToc]] },
         },
 
         MLC_TOC_CONTENTINFO: {
-          [tabKey]: { $merge: { [manualIndexKey]: [{ ...nTocItems }] } },
+          [tabKey]: { $merge: { [tocKey]: [{ ...nTocItems }] } },
         },
       })
     );
@@ -199,39 +222,50 @@ const EditComponent = () => {
 
   const onAddManualNextIndex = (item) => {
     const manualIndexKey = uuid();
+    const tocKey = `toc-${manualIndexKey}`;
     // 기준이 되는 manual의 index
-    const lastIndex = mContent.MLC_TOCLIST[tabKey].findIndex(
-      (f) => f.TOCID === item.TOCID
-    );
+    let lastChildern = null;
+    if (item.PRNT_TOCID === "root") {
+      lastChildern = numberingList[item.TOCID].lastChildIndex;
+    } else {
+      lastChildern = numberingList[item.PRNT_TOCID].lastChildIndex;
+    }
+    // lastChildern 값이 있으면 해당 기능을 실행한다
+    if (lastChildern) {
+      const lastIndex = mContent.MLC_TOCLIST[tabKey].findIndex(
+        (f) => f.TOCID === lastChildern
+      );
 
-    const nToc = Object.assign(
-      { ...initTocItem },
-      {
-        TOCID: manualIndexKey,
-        PRNT_TOCID: item.PRNT_TOCID,
-        INDENT: item.INDENT,
-      }
-    );
+      const nToc = Object.assign(
+        { ...initTocItem },
+        { TOCID: tocKey, PRNT_TOCID: item.PRNT_TOCID, INDENT: item.INDENT }
+      );
 
-    const nTocItems = {
-      fieldId: `item-${manualIndexKey}`,
-      fieldComp: "editor-field",
-      content: undefined,
-    };
+      const nTocItems = {
+        fieldId: `item-${manualIndexKey}`,
+        fieldComp: "editor-field",
+        content: undefined,
+      };
 
-    setContent((prev) =>
-      update(prev, {
-        MLC_TOCLIST: {
-          [tabKey]: { $splice: [[lastIndex, 0, nToc]] },
-        },
+      setContent((prev) =>
+        update(prev, {
+          MLC_TOCLIST: {
+            [tabKey]: { $splice: [[lastIndex + 1, 0, nToc]] },
+          },
 
-        MLC_TOC_CONTENTINFO: {
-          [tabKey]: { $merge: { [manualIndexKey]: [{ ...nTocItems }] } },
-        },
-      })
-    );
+          MLC_TOC_CONTENTINFO: {
+            [tabKey]: { $merge: { [tocKey]: [{ ...nTocItems }] } },
+          },
+        })
+      );
+    }
   };
 
+  const onChangeManual = (nContent) => {
+    setContent((prev) => {
+      return update(prev, { $set: { ...nContent } });
+    });
+  };
   const onDeleteManualIndex = (item) => {
     //현재 index의 자식 list를 찾는다.
     const childrenList = mContent.MLC_TOCLIST[tabKey].filter(
@@ -258,37 +292,57 @@ const EditComponent = () => {
     }
   };
 
+  const onFinish = useCallback(
+    (info) => {
+      onSave({ ...mContent, MLC_TITLE: info.MLC_TITLE, MLC_DATA: { ...info } });
+    },
+    [mContent, onSave]
+  );
+
+  const onSubmit = useCallback(() => {
+    if (form) {
+      form.submit();
+    }
+  }, [form]);
+
   return (
     <StyledManual>
-      <div className="tab-panel">
-        <TabPanel
-          tabInfos={mContent.MLC_TAB_INFO}
-          onAddTab={onAddTab}
-          onRemoveTab={onRemoveTab}
-          onChange={onChangeTabInfo}
-          selectedTabKey={tabKey}
-          onSelectedTab={onSelectedTab}
-        />
-      </div>
-
-      <div className="content-panel">
-        <ContentPanel
-          mContent={mContent}
-          numberingList={numberingList}
-          tocList={mContent.MLC_TOCLIST[tabKey]}
-          tocContentInfo={mContent.MLC_TOC_CONTENTINFO[tabKey]}
-          onChangeTree={onChangeTree}
-          onCreateIndex={onCreateIndex}
-          onChangeTitle={onChangeTitle}
-          onChangeTocTitle={onChangeTocTitle}
-          onChangeContent={onChangeContent}
-          onAddManualDownIndex={onAddManualDownIndex}
-          onAddManualNextIndex={onAddManualNextIndex}
-          onDeleteManualIndex={onDeleteManualIndex}
-        />
-      </div>
+      <Form name="frm" form={form} layout="vertical" onFinish={onFinish}>
+        <div className="tab-panel">
+          <TabPanel
+            tabInfos={mContent.MLC_TAB_INFO}
+            onAddTab={onAddTab}
+            onRemoveTab={onRemoveTab}
+            onChange={onChangeTabInfo}
+            selectedTabKey={tabKey}
+            onSelectedTab={onSelectedTab}
+            onSave={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
+          />
+        </div>
+        <div className="content-panel">
+          <ContentPanel
+            tabKey={tabKey}
+            mContent={mContent}
+            numberingList={numberingList}
+            tocList={mContent.MLC_TOCLIST}
+            tocContentInfo={mContent.MLC_TOC_CONTENTINFO}
+            onChangeTree={onChangeTree}
+            onCreateIndex={onCreateIndex}
+            onChangeTitle={onChangeTitle}
+            onChangeTocTitle={onChangeTocTitle}
+            onChangeContent={onChangeContent}
+            onChangeManual={onChangeManual}
+            onAddManualDownIndex={onAddManualDownIndex}
+            onAddManualNextIndex={onAddManualNextIndex}
+            onDeleteManualIndex={onDeleteManualIndex}
+          />
+        </div>
+      </Form>
     </StyledManual>
   );
 };
 
-export default EditComponent;
+export default Edit;

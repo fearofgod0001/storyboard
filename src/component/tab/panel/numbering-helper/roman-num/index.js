@@ -1,4 +1,4 @@
-export const ROMAN_NUM = {
+const ROMAN_NUM = {
   1: "Ⅰ",
   2: "Ⅱ",
   3: "Ⅲ",
@@ -42,3 +42,4 @@ export const ROMAN_NUM = {
   41: "ⅩⅩⅩⅩⅠ",
   42: "ⅩⅩⅩⅩⅡ",
 };
+export default ROMAN_NUM;

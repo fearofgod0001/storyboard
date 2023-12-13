@@ -1,7 +1,8 @@
 import HANGLE_NUM from "./hangle-num";
 import ROMAN_NUM from "./roman-num";
+import CIRCLE_NUM from "./circle-alphabet-num";
 
-export const NumberingData = ({ mContent, tabKey }) => {
+export const makeToc = ({ mContent, tabKey }) => {
   const { MLC_TOCLIST } = mContent;
 
   const indexList = {};
@@ -35,7 +36,13 @@ export const NumberingData = ({ mContent, tabKey }) => {
               TITLE: item.TITLE,
               lastChildIndex: lastChild,
             };
-
+            break;
+          case 2:
+            indexList[item.TOCID] = {
+              Numbering: `${index + 1})`,
+              TITLE: item.TITLE,
+              lastChildIndex: lastChild,
+            };
             break;
           case 3:
             indexList[item.TOCID] = {
@@ -44,13 +51,28 @@ export const NumberingData = ({ mContent, tabKey }) => {
               lastChildIndex: lastChild,
             };
             break;
-          default:
+          case 4:
+            indexList[item.TOCID] = {
+              Numbering: `${CIRCLE_NUM[index + 1]}.`,
+              TITLE: item.TITLE,
+              lastChildIndex: lastChild,
+            };
+            break;
+          case 5:
             indexList[item.TOCID] = {
               Numbering: `${index + 1})`,
               TITLE: item.TITLE,
               lastChildIndex: lastChild,
             };
-
+            break;
+          default:
+            indexList[item.TOCID] = {
+              Numbering: `${indexList[item.PRNT_TOCID].Numbering}.${
+                index + 1
+              })`,
+              TITLE: item.TITLE,
+              lastChildIndex: lastChild,
+            };
             break;
         }
         //childrenList 각각의 배열의 TOCID값이 자식 List를 가졌는지 확인한다.

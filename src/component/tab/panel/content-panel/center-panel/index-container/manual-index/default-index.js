@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import IndexTitleField from "../../item-fiels/index-title-field";
-import IndexNumbringField from "../../item-fiels/index-numbering-field";
+import { Form } from "antd";
+import IndexTitleField from "./index-title-field";
 import { FieldLoader } from "../../item-fiels";
-import { StyledIndexSubSectionTitle } from "./style";
 
-const ManualIndexSubSection = ({
+const DefaultIndex = ({
   numberingList,
   IndexList = [],
   offset,
@@ -32,21 +31,30 @@ const ManualIndexSubSection = ({
     onChangeContent(item.TOCID, fieldId, model, offset);
   };
 
-  console.debug("contentInfo ====>", contentInfo);
-
   return (
-    <StyledIndexSubSectionTitle>
-      <div key={`item-${item.TOCID}`} style={{ marginLeft: "30px" }}>
-        <div className="content-title">
+    <div className={`toc-${item.INDENT}`}>
+      <div className="content-title">
+        <Form.Item
+          className="frm-title"
+          name={item.TOCID}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "* 목차명을 입력해주세요",
+            },
+          ]}
+        >
           <IndexTitleField
-            initValue={item.TITLE}
-            onChangeTitle={_OnChangeTitle}
+            key={`toc-${item.TOCID}`}
             numberingList={numberingList}
             item={item}
           />
-        </div>
-        <div className="content-body">
-          {contentInfo.map((item, offset) =>
+        </Form.Item>
+      </div>
+      <div className="content-body">
+        {contentInfo &&
+          contentInfo.map((item, offset) =>
             FieldLoader[item.fieldComp].renderer({
               offset,
               ...item,
@@ -56,10 +64,9 @@ const ManualIndexSubSection = ({
               onChangeContent: _onChangeContent,
             })
           )}
-        </div>
       </div>
-    </StyledIndexSubSectionTitle>
+    </div>
   );
 };
 
-export default React.memo(ManualIndexSubSection);
+export default DefaultIndex;
