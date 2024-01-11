@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import StyledBzCenterPanel from "./styled";
+import BzCustomizePanel from "./bz-customize-panel";
 import { RayTab } from "@/components";
 
-const BzCenterPanel = ({ bzSource, bzTabInfo }) => {
+const BzCenterPanel = ({ bzSource, bzTabInfo, dragItem, onDropEnd }) => {
   const [_bzTabInfo, setTabInfo] = useState([]);
 
   useEffect(() => {
@@ -20,7 +21,13 @@ const BzCenterPanel = ({ bzSource, bzTabInfo }) => {
 
   return (
     <StyledBzCenterPanel>
-      <div className="bz-content"></div>
+      <div className="bz-content">
+        <BzCustomizePanel
+          bzSource={bzSource}
+          dragItem={dragItem}
+          onDropEnd={onDropEnd}
+        />
+      </div>
       <div className="bz-tab">
         <RayTab
           tabList={_bzTabInfo}

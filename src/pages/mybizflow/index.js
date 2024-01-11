@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BizFlowPanel from "./bz-panel";
 import { Modal } from "antd";
+import update from "immutability-helper";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { StyledButton, StyledModal } from "@/components";
 import StyledMyBizFlow from "./styled";
@@ -11,15 +12,14 @@ const component = {
   BZ_COMPONENT: [
     { tools: "component1" },
     { tools: "component2" },
-    { tools: "component3" },
+    { tools: "Memo component" },
   ],
   BZ_SOURCE: {
     BZ_SUMMARY: {},
     BZ_FLOW_SOURCE: [],
     BZ_MEMO: [
-      { title: "메모1", describtion: "메모1의 test메모" },
-      { title: "메모2", describtion: "메모2의 test메모" },
-      { title: "메모3", describtion: "메모3의 test메모" },
+      { i: "1", x: 0, y: 0, w: 5, h: 1, scrt: "메모1의 test메모" },
+      { i: "2", x: 3, y: 1, w: 3, h: 2, scrt: "메모2의 test메모" },
     ],
   },
   BZ_TAB_INFO: [
@@ -42,7 +42,9 @@ const component = {
 };
 
 const MyBIzFlow = () => {
+  const [bzComponent, setBzComponent] = useState(component);
   const [isBizFlowOpen, setIsBizFlowOpen] = useState();
+  const [dragItem, setDragItem] = useState();
 
   const onHandleMyBizFlow = () => {
     setIsBizFlowOpen(true);
@@ -50,6 +52,17 @@ const MyBIzFlow = () => {
 
   const onCancel = () => {
     setIsBizFlowOpen(false);
+  };
+
+  const onDragStart = (value, compType) => {
+    setDragItem(value);
+  };
+
+  const onDropEnd = (value, _, e) => {
+    console.debug("onDropEnd", value);
+    setBzComponent((prev) =>
+      update(prev, { BZ_SOURCE: { BZ_MEMO: { $set: value } } })
+    );
   };
 
   return (
@@ -65,7 +78,12 @@ const MyBIzFlow = () => {
         footer={false}
         destroyOnClose
       >
-        <BizFlowPanel bzData={component} />
+        <BizFlowPanel
+          bzData={bzComponent}
+          onDragStart={onDragStart}
+          onDropEnd={onDropEnd}
+          dragItem={dragItem}
+        />
       </AntModal>
     </StyledMyBizFlow>
   );
