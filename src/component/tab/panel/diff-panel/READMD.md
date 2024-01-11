@@ -1,5 +1,3 @@
-![image](https://github.com/fearofgod0001/storyboard/assets/95225230/1f0bacd9-eda4-4936-878d-91fc99157831)use htmldiff-js<br>
-
 
 
 <img src="https://velog.velcdn.com/images/fearofcod/post/92793993-633e-4650-8b5e-f6767ba9e463/image.gif"><br>
