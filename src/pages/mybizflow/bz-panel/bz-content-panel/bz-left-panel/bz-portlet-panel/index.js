@@ -1,10 +1,15 @@
-import StyledBzPortletPanel from "./styled";
-import uuid from "react-uuid";
+import StyledBzPortletPanel from './styled';
+import uuid from 'react-uuid';
 
 export const BzPortletPanel = ({ bzCompList, onDragStart }) => {
-  console.debug("bzCompList", bzCompList);
-  const _onDragStart = (idx, compType) => {
-    onDragStart({ i: uuid(), w: 3, h: 2, scrt: ` test메모` }, compType);
+  const _onDragStart = (component) => {
+    const { portLet_W, portLet_H, tools } = component;
+    onDragStart({
+      i: uuid(),
+      w: portLet_W,
+      h: portLet_H,
+      configInfo: { portletPath: `bz-portlet/bz-${tools}-portlet`, title: tools },
+    });
   };
 
   return (
@@ -16,7 +21,7 @@ export const BzPortletPanel = ({ bzCompList, onDragStart }) => {
             className="bz-component-item "
             draggable={true}
             unselectable="on"
-            onDragStart={() => _onDragStart(i, component.tools)}
+            onDragStart={() => _onDragStart(component)}
           >
             {component.tools}
           </div>

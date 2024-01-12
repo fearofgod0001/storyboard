@@ -1,33 +1,38 @@
-import { useEffect, useState } from "react";
-import StyledBzCustomizePanel from "./styled";
-import { Responsive } from "react-grid-layout";
+import { useEffect, useState } from 'react';
+import StyledBzCustomizePanel from './styled';
+import { Responsive } from 'react-grid-layout';
+import BzPortletWrap from '../bz-portlet-wrap';
 
-const BzCustomizePanel = ({ bzSource, dragItem, onDropEnd }) => {
+const BzCustomizePanel = ({ bzSource, dragItem, onDropEnd, portletList, pageWidth }) => {
   //메모제이션 걸어야함
-  const { BZ_FLOW_SOURCE, BZ_MEMO, VZ_SUMMARY } = bzSource;
 
-  const [bzMemo, setBzMemo] = useState();
+  const [_bzSource, setBzSource] = useState();
 
   useEffect(() => {
-    setBzMemo(BZ_MEMO);
-  }, [BZ_MEMO]);
+    setBzSource(bzSource);
+  }, [bzSource]);
 
   return (
     <StyledBzCustomizePanel>
       <Responsive
-        layouts={{ lg: bzMemo }}
+        layouts={{ lg: _bzSource }}
         breakpoints={{ lg: 1000, md: 800, sm: 400, xs: 2, xxs: 10 }}
         cols={{ lg: 16, md: 12, sm: 8, xs: 4, xxs: 1 }}
         rowHeight={100}
-        width={1200}
+        width={pageWidth}
         isDroppable={true}
         droppingItem={dragItem}
         onDrop={onDropEnd}
       >
-        {bzMemo &&
-          bzMemo.map((item, i) => (
-            <div key={item.i} className="testMemo">
-              {item.scrt}
+        {_bzSource &&
+          _bzSource.map((item, i) => (
+            <div key={item.i} className="bz-source">
+              <BzPortletWrap
+                item={item}
+                portletList={portletList}
+                portlet={portletList.find((f) => f.i === item.i)}
+                bzSource={_bzSource}
+              />
             </div>
           ))}
       </Responsive>

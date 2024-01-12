@@ -1,44 +1,38 @@
-import { useState } from "react";
-import BizFlowPanel from "./bz-panel";
-import { Modal } from "antd";
-import update from "immutability-helper";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { StyledButton, StyledModal } from "@/components";
-import StyledMyBizFlow from "./styled";
+import { useState } from 'react';
+import BizFlowPanel from './bz-panel';
+import { Modal } from 'antd';
+import update from 'immutability-helper';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { StyledButton, StyledModal } from '@/components';
+import StyledMyBizFlow from './styled';
 
 const AntModal = StyledModal(Modal);
 
 const component = {
   BZ_COMPONENT: [
-    { tools: "component1" },
-    { tools: "component2" },
-    { tools: "Memo component" },
+    { tools: 'summary', portLet_W: 13, portLet_H: 1 },
+    { tools: 'flow', portLet_W: 10, portLet_H: 3 },
+    { tools: 'memo', portLet_W: 3, portLet_H: 2 },
   ],
-  BZ_SOURCE: {
-    BZ_SUMMARY: {},
-    BZ_FLOW_SOURCE: [],
-    BZ_MEMO: [
-      { i: "1", x: 0, y: 0, w: 5, h: 1, scrt: "메모1의 test메모" },
-      { i: "2", x: 3, y: 1, w: 3, h: 2, scrt: "메모2의 test메모" },
-    ],
-  },
+  BZ_SOURCE: [],
   BZ_TAB_INFO: [
     {
-      TAB_KEY: "tab1",
-      LABEL: "BZ_FLOW1",
+      TAB_KEY: 'tab1',
+      LABEL: 'BZ_FLOW1',
       POS: 1,
     },
     {
-      TAB_KEY: "tab2",
-      LABEL: "BZ_FLOW2",
+      TAB_KEY: 'tab2',
+      LABEL: 'BZ_FLOW2',
       POS: 2,
     },
     {
-      TAB_KEY: "tab3",
-      LABEL: "BZ_FLOW3",
+      TAB_KEY: 'tab3',
+      LABEL: 'BZ_FLOW3',
       POS: 3,
     },
   ],
+  BZ_PORTLETLIST: [],
 };
 
 const MyBIzFlow = () => {
@@ -54,14 +48,13 @@ const MyBIzFlow = () => {
     setIsBizFlowOpen(false);
   };
 
-  const onDragStart = (value, compType) => {
+  const onDragStart = (value) => {
     setDragItem(value);
   };
 
   const onDropEnd = (value, _, e) => {
-    console.debug("onDropEnd", value);
     setBzComponent((prev) =>
-      update(prev, { BZ_SOURCE: { BZ_MEMO: { $set: value } } })
+      update(prev, { BZ_SOURCE: { $set: value }, BZ_PORTLETLIST: { $splice: [[1, 0, dragItem]] } })
     );
   };
 
@@ -78,12 +71,7 @@ const MyBIzFlow = () => {
         footer={false}
         destroyOnClose
       >
-        <BizFlowPanel
-          bzData={bzComponent}
-          onDragStart={onDragStart}
-          onDropEnd={onDropEnd}
-          dragItem={dragItem}
-        />
+        <BizFlowPanel bzComponent={bzComponent} onDragStart={onDragStart} onDropEnd={onDropEnd} dragItem={dragItem} />
       </AntModal>
     </StyledMyBizFlow>
   );

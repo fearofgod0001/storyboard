@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledBzCustomizePanel = styled.div`
   .react-grid-layout {
@@ -6,15 +6,10 @@ const StyledBzCustomizePanel = styled.div`
     position: relative;
     transition: height 200ms ease;
   }
-  .testMemo {
-    /* width: 250px;
-    height: 250px; */
-    background-color: #fff6cf;
-    border: 1px solid #f0e8c3;
-
+  .bz-source {
     .react-resizable-handle::after {
       z-index: 60;
-      content: "";
+      content: '';
       position: absolute;
       right: -6px;
       bottom: -6px;
