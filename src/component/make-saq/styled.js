@@ -1,29 +1,24 @@
 import styled from "styled-components";
 
-const StyledMakeMcq = styled.div`
+const StyledMakeSaq = styled.div`
   margin-top: 10px;
-  /* background-color: #f3f3f3; */
 
+  .ques-answer,
   .ques-items {
     width: 100%;
-    margin: 5px 0 15px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 12px;
   }
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   .ans-title,
-  .item-title,
   .ques-title,
   .descrip-title {
     width: 100%;
     height: 30px;
-    margin-top: 12px;
+    /* margin-top: 12px; */
     font-weight: bolder;
     display: flex;
     justify-content: center;
@@ -31,12 +26,6 @@ const StyledMakeMcq = styled.div`
     border-top: 1px solid #ccc;
     background-color: #f3f3f3;
   }
-  .ant-input-number-input-wrap {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 
-export default StyledMakeMcq;
+export default StyledMakeSaq;

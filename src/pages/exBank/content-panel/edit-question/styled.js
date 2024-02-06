@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const StyldedEditQuestion = styled.div`
-  padding: 0 10px 0 10px;
   .create-classify-data {
     display: flex;
     margin-bottom: 10px;
@@ -19,8 +18,18 @@ const StyldedEditQuestion = styled.div`
     width: 100px;
     display: flex;
     margin-right: 5px;
-
     align-items: center;
+  }
+  .change-setting {
+    width: 100%;
+    height: 37px;
+    font-weight: bolder;
+    margin-top: 19px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #060056;
+    color: white;
   }
 `;
 

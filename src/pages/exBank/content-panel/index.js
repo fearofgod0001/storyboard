@@ -124,6 +124,8 @@ const ExBankContentPanel = ({ exDataList, onSelectTreeNode, selectNodeId }) => {
             onChange={onChange}
           />
         </div>
+        <div className="ex-search"></div>
+
         <List
           mlList={_mList}
           pageSize={pageSize}

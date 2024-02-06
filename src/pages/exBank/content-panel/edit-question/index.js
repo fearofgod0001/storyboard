@@ -127,10 +127,7 @@ const EditQuestion = ({ exDataList, onSelectTreeNode, selectNodeId }) => {
           treeData={dataSource}
         />
       </div>
-      <div className="create-ex-title">
-        <div className="ex-header">문제 :</div>
-        <Input placeholder="문제를 입력해주세요" onChange={onChangeExTitle} />
-      </div>
+
       <div className="create-ex-format">
         <div className="ex-header">유형 :</div>
         <div style={{ width: "100%" }}>
@@ -151,7 +148,7 @@ const EditQuestion = ({ exDataList, onSelectTreeNode, selectNodeId }) => {
           />
         </div>
       </div>
-      <div className="ex-header">설정</div>
+      <div className="change-setting">문제 설정</div>
 
       {exType === "MCQ" && <MakeMcq />}
       {exType === "SAQ" && <MakeSaq />}
