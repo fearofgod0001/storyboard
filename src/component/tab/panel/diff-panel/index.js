@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { StyledDiffPanel } from "./styled";
-import { HistoryInfo } from "../content-panel/right-panel/options";
 import { useMutation } from "react-query";
 import IndexNumbringField from "../content-panel/center-panel/index-container/manual-index/index-numbering-field";
 import update from "immutability-helper";
 import HtmlDiff from "htmldiff-js";
 import { FieldLoader } from "../content-panel/center-panel/item-fiels";
+
 import {
   selectMlCBymlcIdx,
   selectManualInfoByMlcVerOrgIdx,
-} from "@/services/manual";
+} from "../../../../services/manual";
 
 const DiffPanel = ({
   mContent,
@@ -159,11 +159,11 @@ const DiffPanel = ({
               ></i>
               현재 버전
             </div>
-            <HistoryInfo
+            {/* <HistoryInfo
               mlcIdx={currentMlcIdx}
               mlcOrgIdx={MLC_ORG_IDX}
               onChangeManualPage={_onChangeleftIdx}
-            />
+            /> */}
           </div>
           <div className="diff-select">
             <div className="diff-select-title">
@@ -173,11 +173,11 @@ const DiffPanel = ({
               ></i>
               이전 버전
             </div>
-            <HistoryInfo
+            {/* <HistoryInfo
               mlcIdx={compareMlcIdx}
               mlcOrgIdx={MLC_ORG_IDX}
               onChangeManualPage={_onChangeRightIdx}
-            />
+            /> */}
           </div>
         </div>
 

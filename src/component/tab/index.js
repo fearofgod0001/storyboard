@@ -8,8 +8,7 @@ import { TabPanel } from "./panel";
 import ContentPanel from "./panel/content-panel";
 import DiffPanel from "./panel/diff-panel";
 import { makeToc } from "./panel/numbering-helper";
-import useUser from "portal/useUser";
-import { StyledButton, StyledModal } from "@/components";
+
 import { useMutation, useQueryClient } from "react-query";
 import {
   selectMlCBymlcIdx,
@@ -19,10 +18,7 @@ import {
   insertContentReqData,
   selectContentReqDataByMlcIdx,
   updateContReqDataByPosId,
-} from "@/services/manual";
-import { merge } from "jquery";
-
-const AntModal = StyledModal(Modal);
+} from "../../services/manual";
 
 const init = {
   MLC_TAB_INFO: [
@@ -94,7 +90,7 @@ const Edit = ({
   const [isContReqDataOpen, setIsContReqDataOpen] = useState(false);
   const [compReqData, setCompReqData] = useState();
   const [contReqList, setContReqList] = useState([]);
-  const [userInfo] = useUser();
+
   const [selectedMlc, setSelectedMlc] = useState();
   const [viewMode, setViewMode] = useState("wide");
   const [_mlcCodeId, setMlcCodeId] = useState();
@@ -132,14 +128,14 @@ const Edit = ({
       const nData = Object.assign(mContent.MLC_DATA, {
         MLC_CODE_ID: _mlcCodeId,
         MLC_EDT: {
-          userList: [userInfo],
+          userList: [],
           deptList: [],
           groupList: [],
         },
       });
       form.setFieldsValue({ ...nData });
     }
-  }, [form, mContent.MLC_DATA, pageMode, userInfo, _mlcCodeId]);
+  }, [form, mContent.MLC_DATA, pageMode, _mlcCodeId]);
 
   const {
     mutate: selectMutate,
@@ -709,7 +705,7 @@ const Edit = ({
 
   return (
     <StyledManual>
-      <AntModal
+      <Modal
         title="배포방법"
         open={isShowConfirm}
         width={700}
@@ -721,28 +717,28 @@ const Edit = ({
           title="배포방법을 선택해 주세요? "
           extra={
             <div>
-              <StyledButton
+              <button
                 className="btn-green btn-lg mr10"
                 onClick={() => onSaveDo("PUBS")}
               >
                 확정 배포
-              </StyledButton>
-              <StyledButton
+              </button>
+              <button
                 className="btn-secondary btn-lg mr10"
                 onClick={() => onSaveDo("WAIT")}
               >
                 예약 배포
-              </StyledButton>
-              <StyledButton
+              </button>
+              <button
                 className="btn-primary btn-lg"
                 onClick={() => onSaveDo("INIT")}
               >
                 임시 저장
-              </StyledButton>
+              </button>
             </div>
           }
         />
-      </AntModal>
+      </Modal>
       <Form
         name="frm"
         form={form}
@@ -823,7 +819,7 @@ const Edit = ({
           />
         </div>
 
-        <AntModal
+        <Modal
           className="modal-notitle-full-screen"
           open={isDiffOpen}
           onCancel={onHandlelEntireDiff}
@@ -840,7 +836,7 @@ const Edit = ({
             tocList={mContent.MLC_TOCLIST}
             tocContentInfo={mContent.MLC_TOC_CONTENTINFO}
           />
-        </AntModal>
+        </Modal>
       </Form>
     </StyledManual>
   );
