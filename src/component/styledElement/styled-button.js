@@ -129,14 +129,14 @@ const btnDark = css`
 
 const StyledButton = styled.button`
   border: 1px solid transparent;
-  background-color: transparent;
+  background-color: #00a2e8;
   cursor: pointer;
   padding: 0.4rem 1.125rem;
   font-size: 0.8125rem;
   line-height: 1.47;
   font-weight: 400;
   border-radius: 3px;
-  color: #212529;
+  color: #fff;
   text-align: center;
   vertical-align: middle;
   transition: all 0.2s ease-in-out;

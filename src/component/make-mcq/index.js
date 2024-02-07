@@ -1,24 +1,57 @@
 import { useEffect, useState } from "react";
 import StyledMakeMcq from "./styled";
 import { Input, Radio, InputNumber } from "antd";
+import update from "immutability-helper";
 
 const { TextArea } = Input;
 
-const MakeMcq = ({}) => {
+const MakeMcq = ({ onHandleExData }) => {
   const [itemCount, setItemCount] = useState(5);
   const [selitem, setSelItem] = useState(1);
+  const [itemArr, setItemArr] = useState([]);
 
-  const onChange = (cnt) => {
-    console.debug("changed", cnt);
+  useEffect(() => {
+    if (itemArr) {
+      onHandleExData({ EX_ITEM_DATA: itemArr });
+    }
+  }, [itemArr]);
+
+  useEffect(() => {
+    if (itemCount) {
+      setItemArr((prev) => {
+        const curLeng = prev?.length;
+        if (itemCount > curLeng) {
+          const itemsToAdd = Array(itemCount - curLeng).fill();
+          return update(prev, { $push: itemsToAdd });
+        } else if (itemCount < curLeng) {
+          return update(prev, { $splice: [[itemCount, 1]] });
+        }
+      });
+    }
+  }, [itemCount]);
+
+  const onChangeInputNum = (cnt) => {
     setItemCount(cnt);
   };
 
+  const onChangeItemTitle = (e, index) => {
+    setItemArr((prev) => {
+      return update(prev, { $splice: [[index, 1, e.target.value]] });
+    });
+  };
+
   const onChangeRadio = (item) => {
-    console.debug("onChangeRadio", item.target.value);
+    onHandleExData({ EX_ANSWER: selitem });
     setSelItem(item.target.value);
   };
 
-  useEffect(() => {}, [itemCount]);
+  const onChangeExDescrip = (e) => {
+    onHandleExData({ EX_DESCRIPT: e.target.value });
+  };
+
+  const onChangeExExplain = (e) => {
+    onHandleExData({ EX_EXPLAIN: e.target.value });
+  };
 
   const renderRadioButtons = () => {
     return Array.from({ length: itemCount }, (_, index) => (
@@ -26,6 +59,7 @@ const MakeMcq = ({}) => {
         <Radio value={index + 1}>
           {index + 1}.
           <Input
+            onChange={(e) => onChangeItemTitle(e, index, itemCount)}
             style={{
               width: 380,
               height: 28,
@@ -42,6 +76,7 @@ const MakeMcq = ({}) => {
       <div className="ques-content">
         <div className="ques-title"> 문제 내용 </div>
         <TextArea
+          onChange={onChangeExDescrip}
           style={{
             resize: "none",
             height: 50,
@@ -60,7 +95,7 @@ const MakeMcq = ({}) => {
             min={1}
             max={5}
             defaultValue={5}
-            onChange={onChange}
+            onChange={onChangeInputNum}
             style={{ marginTop: 10, width: "100%" }}
           />
         </div>
@@ -69,6 +104,7 @@ const MakeMcq = ({}) => {
       <div className="ques-answer">
         <div className="ans-title"> 정답 </div>
         <Input
+          value={selitem}
           style={{
             height: 28,
           }}
@@ -77,6 +113,7 @@ const MakeMcq = ({}) => {
       <div className="ques-descrip">
         <div className="descrip-title"> 해설 </div>
         <TextArea
+          onChange={onChangeExExplain}
           style={{
             resize: "none",
             height: 80,

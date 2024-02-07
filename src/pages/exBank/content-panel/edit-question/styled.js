@@ -31,6 +31,12 @@ const StyldedEditQuestion = styled.div`
     background-color: #060056;
     color: white;
   }
+  .submit-btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+  }
 `;
 
 export default StyldedEditQuestion;

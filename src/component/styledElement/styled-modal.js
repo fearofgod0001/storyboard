@@ -14,7 +14,10 @@ const StyledModal = (Component) => styled(Component)`
 
   .ant-modal-body {
     padding: 10px;
-    height: ${(props) => (props.autoHeight ? "calc(100vh - 130px)" : "100%")};
+    /* height: ${(props) =>
+      props.autoHeight ? "calc(100vh - 130px)" : "100%"};
+    h */
+    height: 100%;
     overflow-y: auto;
   }
 

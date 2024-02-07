@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import { AutoComplete, Input, Table, Pagination } from "antd";
 import { StyledExBankList } from "./styled";
-import StyledAntdTable from "../../../../component/styledElement/styled-table";
+import StyledAntdTable from "@/component/styledElement/styled-table";
 
 // import { useQuery } from 'react-query';
 // import { selectManualTitle } from '@/services/manual';
@@ -18,10 +18,12 @@ const columns = [
   },
   {
     title: `문제`,
-    dataIndex: "MLC_TITLE",
+    dataIndex: "EX_TITLE",
     align: "center",
     width: "700px",
     render: (title, record) => {
+      console.debug("title", title);
+      console.debug("record", record);
       return (
         <div>
           <div className="full-path">{record.FULL_PATH}</div>
@@ -32,7 +34,7 @@ const columns = [
   },
   {
     title: `형식`,
-    dataIndex: "MLC_TYPE",
+    dataIndex: "EX_TYPE",
     align: "center",
     width: "60px",
   },
@@ -79,12 +81,12 @@ const List = ({
     }
   }, [mlList]);
 
-  useEffect(() => {
-    if (checkedList) {
-      const filerList = mlList.filter((f) => checkedList.includes(f.EX_TYPE));
-      setMlist(filerList);
-    }
-  }, [checkedList, mlList]);
+  // useEffect(() => {
+  //   if (checkedList) {
+  //     const filerList = mlList.filter((f) => checkedList.includes(f.EX_TYPE));
+  //     setMlist(filerList);
+  //   }
+  // }, [checkedList, mlList]);
 
   //   const { data: manualData, isSuccess } = useQuery(
   //     ['selectManualTitle', keyword],
