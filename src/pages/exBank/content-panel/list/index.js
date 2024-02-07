@@ -63,7 +63,6 @@ const List = ({
   pageSize,
   totCount,
   onChangePage,
-  checkedList,
 }) => {
   const [_mlist, setMlist] = useState(mlList);
   const [keyword, setKeyword] = useState();
