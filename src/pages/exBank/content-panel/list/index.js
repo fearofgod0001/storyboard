@@ -22,8 +22,6 @@ const columns = [
     align: "center",
     width: "700px",
     render: (title, record) => {
-      console.debug("title", title);
-      console.debug("record", record);
       return (
         <div>
           <div className="full-path">{record.FULL_PATH}</div>
@@ -37,6 +35,9 @@ const columns = [
     dataIndex: "EX_TYPE",
     align: "center",
     width: "60px",
+    render: (title) => {
+      return <div>{title === "MCQ" ? "객관식" : "주관식"}</div>;
+    },
   },
   {
     title: `등록자`,

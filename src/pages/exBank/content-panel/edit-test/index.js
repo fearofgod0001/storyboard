@@ -6,7 +6,7 @@ import StyldedEditQuestion from "./styled";
 import MakeSaq from "@/component/make-saq";
 import MakeMcq from "@/component/make-mcq";
 
-const EditQuestion = ({
+const EditTest = ({
   exDataList,
   onSelectTreeNode,
   selectNodeId,
@@ -137,6 +137,7 @@ const EditQuestion = ({
   };
 
   const onHandleExData = (ques) => {
+    console.debug("ques", ques);
     setExData({ ...exData, ...ques });
   };
 
@@ -248,4 +249,4 @@ const EditQuestion = ({
   );
 };
 
-export default EditQuestion;
+export default EditTest;

@@ -5,10 +5,16 @@ import update from "immutability-helper";
 
 const { TextArea } = Input;
 
-const MakeMcq = ({ onHandleExData }) => {
+const MakeMcq = ({ onHandleExData, onChange, value }) => {
   const [itemCount, setItemCount] = useState(5);
   const [selitem, setSelItem] = useState(1);
   const [itemArr, setItemArr] = useState([]);
+
+  useEffect(() => {
+    if (selitem) {
+      onHandleExData({ EX_ANSWER: selitem });
+    }
+  }, [selitem]);
 
   useEffect(() => {
     if (itemArr) {
@@ -41,7 +47,6 @@ const MakeMcq = ({ onHandleExData }) => {
   };
 
   const onChangeRadio = (item) => {
-    onHandleExData({ EX_ANSWER: selitem });
     setSelItem(item.target.value);
   };
 

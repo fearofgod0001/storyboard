@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
-import { ContentPannel } from "../../../component/panel";
-import StyledButton from "../../../component/styledElement/styled-button";
-import StyledModal from "../../../component/styledElement/styled-modal";
+import { ContentPannel } from "@/component/panel";
+import StyledButton from "@/component/styledElement/styled-button";
+import StyledModal from "@/component/styledElement/styled-modal";
 import { Modal, Checkbox, Form, message } from "antd";
 import StyledExBankContentPanel from "./styled";
 import update from "immutability-helper";
 import List from "./list";
-import EditQuestion from "./edit-question";
+import EditTest from "./edit-test";
 
 const AntModal = StyledModal(Modal);
 
@@ -25,7 +25,7 @@ const ExBankContentPanel = ({
   const [_exDataList, setExDataList] = useState(exDataList);
   const [isOpen, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(10);
-  const [selectedMlc, setSelectedMlc] = useState();
+  const [selectedEx, setSelectedEx] = useState();
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
 
   const checkAll = plainOptions.length === checkedList.length;
@@ -49,7 +49,11 @@ const ExBankContentPanel = ({
 
   //모달창을 띄울 함수
   const onShowEdit = useCallback((record) => {
-    setSelectedMlc(record);
+    console.debug("recoed onShowEdit", record);
+
+    form.setFieldsValue({ ...record });
+
+    setSelectedEx(record);
     setOpen(true);
   }, []);
 
@@ -142,7 +146,7 @@ const ExBankContentPanel = ({
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <EditQuestion
+            <EditTest
               exDataList={_exDataList}
               onSelectTreeNode={onSelectTreeNode}
               selectNodeId={selectNodeId}
