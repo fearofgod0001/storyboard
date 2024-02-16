@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const StyledExBank = styled.div`
+const StyledETest = styled.div`
   display: flex;
   width: 100%;
   height: 100vh;
@@ -15,4 +15,4 @@ const StyledExBank = styled.div`
   }
 `;
 
-export default StyledExBank;
+export default StyledETest;

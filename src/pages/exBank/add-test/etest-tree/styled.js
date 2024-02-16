@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const StyeldExBankLeftPanel = styled.div`
-  .left-panel-header {
+const StyeldETestTree = styled.div`
+  .e-test-header {
     width: 100%;
     height: 50px;
     background-color: #efefef;
@@ -38,4 +38,4 @@ const StyeldExBankLeftPanel = styled.div`
   }
 `;
 
-export default StyeldExBankLeftPanel;
+export default StyeldETestTree;
