@@ -10,6 +10,4 @@ plz enjoy it!<br>
 
 📝<a href ="https://github.com/fearofgod0001/storyboard/blob/master/src/component/tab/panel/diff-panel/READMD.md"> HTML Diff </a><br>
 
-
-
-
+📖<a href ="https://github.com/fearofgod0001/storyboard/blob/master/src/pages/exBank/add-test/README.md"> Make E-Test </a><br>
