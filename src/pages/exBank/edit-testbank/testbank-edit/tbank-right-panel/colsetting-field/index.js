@@ -1,4 +1,4 @@
-import { Select, Space } from 'antd';
+import { Select } from 'antd';
 import StyledColSettingField from './styled';
 
 const init = [
@@ -12,9 +12,9 @@ const init = [
   },
 ];
 
-const ColSettingField = ({}) => {
+const ColSettingField = ({ onHandcleColumn }) => {
   const handleChange = (value) => {
-    console.debug(`selected ${value}`);
+    onHandcleColumn(value);
   };
 
   return (

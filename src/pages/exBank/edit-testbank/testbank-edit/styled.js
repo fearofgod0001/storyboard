@@ -6,7 +6,8 @@ const StyledTestBankEdit = styled.div`
   height: 100%;
 
   .tbank-left-panel {
-    width: 480px;
+    width: 400px;
+    min-width: 300px;
     height: 100%;
     border-right: 1px solid #efefef;
   }
@@ -18,6 +19,7 @@ const StyledTestBankEdit = styled.div`
 
   .tbank-right-panel {
     width: 500px;
+    min-width: 320px;
     height: 100%;
     border-left: 1px solid #efefef;
   }

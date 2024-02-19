@@ -18,9 +18,11 @@ const ApplyField = ({ fieldValue }) => {
       const isChange = fieldValue && JSON.stringify(preValue.current) !== JSON.stringify(resultSet);
       if (isChange) {
         // onChange(resultSet);
-        setIsOpenCard(false);
+        // setIsOpenCard(false);
       }
+      setIsOpenCard(false);
     },
+
     // [fieldValue, onChange]
     [fieldValue]
   );
@@ -73,7 +75,7 @@ const ApplyField = ({ fieldValue }) => {
       </StyledApplyField>
       <AntModal
         bodyStyle={{ padding: '0px' }}
-        style={{ top: '10px' }}
+        style={{ top: '70px' }}
         title={'담당자 설정'}
         onCancel={onCancel}
         width={1050}

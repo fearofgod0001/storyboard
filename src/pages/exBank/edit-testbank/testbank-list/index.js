@@ -15,29 +15,29 @@ const columns = [
   },
   {
     title: `시험명`,
-    dataIndex: 'T_TITLE',
+    dataIndex: 'EX_TEST_TITLE',
     align: 'center',
     width: '1000px',
     render: (title, record) => {
-      return <div className="manual-title">{record.T_TITLE}</div>;
+      return <div className="manual-title">{record.EX_TEST_TITLE}</div>;
     },
   },
   {
     title: `시작일`,
-    dataIndex: 'T_START_DATE',
+    dataIndex: 'EX_START_DATE',
     align: 'center',
     width: '170px',
     render: (text) => moment(text).format('YYYY-MM-DD'),
   },
   {
     title: `소요시간`,
-    dataIndex: 'T_TIME',
+    dataIndex: 'EX_TEST_RUNTIME',
     align: 'center',
     width: '130px',
   },
   {
     title: `상태`,
-    dataIndex: 'T_STATUS',
+    dataIndex: 'EX_TEST_STATUS',
     align: 'center',
     width: '80px',
   },
@@ -45,14 +45,14 @@ const columns = [
 
 const { Search } = Input;
 
-const TestBankList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChangePage }) => {
-  const [_eTestList, setETestList] = useState();
+const TestBankList = ({ exList, onShowEdit, cPage, pageSize, totCount, onChangePage }) => {
+  const [_exist, setExList] = useState();
   const [keyword, setKeyword] = useState();
   const [options, setOption] = useState([]);
 
   useEffect(() => {
-    setETestList(eTestList);
-  }, [eTestList]);
+    setExList(exList);
+  }, [exList]);
 
   const onRowClick = useCallback(
     (record, rowIndex) => {
@@ -86,7 +86,7 @@ const TestBankList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChan
       <AntTable
         cursor={'pointer'}
         columns={columns}
-        dataSource={_eTestList}
+        dataSource={_exist}
         onRow={(record, rowIndex) => {
           return { onClick: () => onRowClick(record, rowIndex) };
         }}
