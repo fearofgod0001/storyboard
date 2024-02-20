@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { ContentPannel } from "@/components";
-import { Form, Modal } from "antd";
+import { Form, Modal, message } from "antd";
 import { StyledButton, StyledModal } from "@/components/styledElement";
 import { useQuery } from "react-query";
 import { selectManualCategoryInfo } from "@/services/manual";
@@ -101,16 +101,32 @@ const EditTestBank = ({}) => {
     setIsOpenEdit(false);
   };
 
+  //시험지 문제를 추가하는 함수
   const onAddTestItem = (item) => {
     if (item) {
-      setExItemList((prev) => {
-        return update(prev, {
-          $splice: [[exItemList.length, 0, item]],
+      const exist = exItemList.some((f) => f.EX_IDX === item.EX_IDX);
+      if (!exist) {
+        setExItemList((prev) => {
+          return update(prev, {
+            $splice: [[exItemList.length, 0, item]],
+          });
         });
-      });
-      setOpenSelectItem(false);
+        setOpenSelectItem(false);
+      } else {
+        message.error("동일한 문제가 존재합니다.");
+      }
     }
   };
+
+  //시험지 문제를 삭제하는 함수
+  const onRemoveTestItem = (index, exIdx) => {
+    setExItemList((prev) => {
+      return update(prev, {
+        $splice: [[index, 1]],
+      });
+    });
+  };
+
   //문제 추가 버튼 렌더함수
   const renderButton = () => {
     return (
@@ -120,7 +136,7 @@ const EditTestBank = ({}) => {
     );
   };
 
-  const onChangeEnd = (result) => {
+  const onDragEnd = (result) => {
     const { source } = result;
     const { destination } = result;
 
@@ -143,17 +159,9 @@ const EditTestBank = ({}) => {
     setOpenSelectItem(bool);
   };
 
+  //단 설정 하는 함수
   const onHandcleColumn = (val) => {
-    console.debug("onHandcleColumn", val);
     setExColumn(val);
-  };
-
-  const onRemoveTestItem = (index, exIdx) => {
-    setExItemList((prev) => {
-      return update(prev, {
-        $splice: [[index, 1]],
-      });
-    });
   };
 
   return (
@@ -184,9 +192,9 @@ const EditTestBank = ({}) => {
         >
           <TestBankEdit
             exColumn={exColumn}
+            onDragEnd={onDragEnd}
             exItemList={exItemList}
             exTreeData={exTreeData}
-            onChangeEnd={onChangeEnd}
             onAddTestItem={onAddTestItem}
             onHandcleColumn={onHandcleColumn}
             isOpenSelectItem={isOpenSelectItem}
