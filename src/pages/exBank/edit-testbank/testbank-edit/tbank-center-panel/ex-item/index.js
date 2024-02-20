@@ -1,25 +1,36 @@
-import { useEffect, useState } from 'react';
-import { CloseOutlined } from '@ant-design/icons';
-import { TextAreaField } from '@/components/form-fields';
-import { Radio, Popconfirm } from 'antd';
+import { useEffect, useState } from "react";
+import { CloseOutlined } from "@ant-design/icons";
+import { TextAreaField } from "@/components/form-fields";
+import { Radio, Popconfirm } from "antd";
+import { useDrag, useDrop } from "react-dnd";
 
-import StyledExItem from './styled';
-import InputNumberField from './score-field';
-import McqItemField from './mcq-item-field';
+import StyledExItem from "./styled";
+import InputNumberField from "./score-field";
+import McqItemField from "./mcq-item-field";
 
 const ExItem = ({ item, index, onRemoveTestItem }) => {
   const { EX_DATA, EX_IDX } = item || {};
 
   const onChangeScore = (value) => {
-    console.debug('onChangeScore', value);
+    console.debug("onChangeScore", value);
   };
 
   const onChangeRadio = (e) => {
-    console.debug('onChangeRadio', e.target.value);
+    console.debug("onChangeRadio", e.target.value);
   };
 
+  const [{ isOver }, dropLeft] = useDrop({
+    accept: "field",
+    canDrop: () => item.EX_DATA !== null,
+    hover(dragItem, monitor) {},
+    collect: (monitor) => ({
+      isOver: monitor.isOver({ shallow: true }),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
   return (
-    <StyledExItem>
+    <StyledExItem ref={dropLeft}>
       <div className="score">
         <div className="score-title">배점 </div>
         <div className="score-input">

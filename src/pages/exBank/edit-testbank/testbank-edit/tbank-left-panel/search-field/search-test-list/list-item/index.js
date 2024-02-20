@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useMutation } from 'react-query';
-import { selectExData } from '@/services/manual';
+import { useState, useEffect } from "react";
+import { useMutation } from "react-query";
+import { selectExData } from "@/services/manual";
+import { useDrag } from "react-dnd";
 
-const SrchListItem = ({ item }) => {
+const SrchListItem = ({ item, onAddTestItem }) => {
   const { EX_TITLE } = item || {};
 
   const [isOpenData, setIsOpenData] = useState();
@@ -13,7 +14,7 @@ const SrchListItem = ({ item }) => {
     mutate: mutateSelectExData,
     isSuccess: isSuccessSelectExData,
     data: selectExDataInfo,
-  } = useMutation('selectExData', selectExData);
+  } = useMutation("selectExData", selectExData);
 
   useEffect(() => {
     if (selectExDataInfo && isSuccessSelectExData) {
@@ -27,13 +28,42 @@ const SrchListItem = ({ item }) => {
     mutateSelectExData(item);
   };
 
+  const [{ isDragging }, drag] = useDrag(() => {
+    return {
+      type: "field",
+      item: () => {
+        if (itemData) {
+          return {
+            EX_IDX: item.EX_IDX,
+            EX_DATA: itemData.EX_DATA,
+            EX_TITLE: item.EX_TITLE,
+            EX_TYPE: item.EX_TYPE,
+          };
+        }
+      },
+      end: (item, monitor) => {
+        const didDrop = monitor.didDrop();
+        if (didDrop) {
+          onAddTestItem(item);
+        }
+      },
+      collect: (monitor) => {
+        return { isDragging: monitor.isDragging() };
+      },
+    };
+  }, [item, itemData]);
+
+  const opacity = isDragging ? 0.5 : 1;
+
   return (
-    <div className="list-item">
-      <div className="item-title" onClick={onHandleExData}>
+    <div className="list-item" ref={drag} style={{ opacity }}>
+      <div className="item-title" onMouseDown={onHandleExData}>
         <div className="item-icon">Q.</div>
         <div className="item-content"> {EX_TITLE} </div>
       </div>
-      {isOpenData && <div className="item-descrip">{itemData?.EX_DATA.EX_DESCRIP}</div>}
+      {isOpenData && (
+        <div className="item-descrip">{itemData?.EX_DATA.EX_DESCRIP}</div>
+      )}
     </div>
   );
 };
