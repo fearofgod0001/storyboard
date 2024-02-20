@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import { selectExData } from "@/services/manual";
 import { useDrag } from "react-dnd";
+import { RightOutlined, DownOutlined, UpOutlined } from "@ant-design/icons";
 
 const SrchListItem = ({ item, onAddTestItem }) => {
   const { EX_TITLE } = item || {};
@@ -26,6 +27,15 @@ const SrchListItem = ({ item, onAddTestItem }) => {
 
   const onHandleExData = () => {
     mutateSelectExData(item);
+  };
+
+  const _onAddTestItem = () => {
+    onAddTestItem({
+      EX_IDX: item.EX_IDX,
+      EX_DATA: itemData.EX_DATA,
+      EX_TITLE: item.EX_TITLE,
+      EX_TYPE: item.EX_TYPE,
+    });
   };
 
   const [{ isDragging }, drag] = useDrag(() => {
@@ -60,9 +70,18 @@ const SrchListItem = ({ item, onAddTestItem }) => {
       <div className="item-title" onMouseDown={onHandleExData}>
         <div className="item-icon">Q.</div>
         <div className="item-content"> {EX_TITLE} </div>
+        <div className="item-show">
+          {isOpenData ? <UpOutlined /> : <DownOutlined />}
+        </div>
       </div>
+
       {isOpenData && (
-        <div className="item-descrip">{itemData?.EX_DATA.EX_DESCRIP}</div>
+        <div className="item-descrip">
+          <div style={{ width: "100%" }}>{itemData?.EX_DATA.EX_DESCRIP}</div>
+          <div className="item-arrow" onClick={_onAddTestItem}>
+            <RightOutlined />
+          </div>
+        </div>
       )}
     </div>
   );

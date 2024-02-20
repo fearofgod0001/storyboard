@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const StyledSrchTestList = styled.div`
   width: 100%;
@@ -29,6 +29,9 @@ const StyledSrchTestList = styled.div`
     }
   }
   .list-item {
+    margin: 2px;
+    border: 1px solid #efefef;
+    border-radius: 5px;
     .item-title {
       height: 30px;
       background-color: #efefef;
@@ -39,15 +42,37 @@ const StyledSrchTestList = styled.div`
       padding-left: 4px;
       font-weight: 600;
       font-size: 13px;
-      margin: 2px;
+
       cursor: pointer;
       .item-icon {
         margin: 0 3px 0 3px;
+      }
+      .item-content {
+        width: 100%;
+      }
+      .item-show {
+        cursor: pointer;
+        margin-right: 3px;
       }
     }
     .item-descrip {
       font-size: 12px;
       padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      .item-arrow {
+        cursor: pointer;
+        width: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #efefef;
+        border-radius: 5px;
+        &:hover {
+          color: white;
+          background-color: #4491e0;
+        }
+      }
     }
   }
 `;
