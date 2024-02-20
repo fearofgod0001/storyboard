@@ -4,6 +4,7 @@ import TbankLeftPanel from './tbank-left-panel';
 import TbankRightPanel from './tbank-right-panel';
 const TestBankEdit = ({
   exColumn,
+  exTreeData,
   exItemList,
   onChangeEnd,
   onAddTestItem,
@@ -17,6 +18,7 @@ const TestBankEdit = ({
       <div className="tbank-left-panel">
         <TbankLeftPanel
           exColumn={exColumn}
+          exTreeData={exTreeData}
           exItemList={exItemList}
           onChangeEnd={onChangeEnd}
           onRemoveTestItem={onRemoveTestItem}
@@ -25,6 +27,7 @@ const TestBankEdit = ({
       <div className="tbank-center-panel">
         <TbankCenterPanel
           exColumn={exColumn}
+          exTreeData={exTreeData}
           exItemList={exItemList}
           onAddTestItem={onAddTestItem}
           onRemoveTestItem={onRemoveTestItem}

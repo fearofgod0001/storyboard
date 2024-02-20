@@ -2,12 +2,12 @@ import StyledTbankLeftPanel from './styled';
 import LayoutField from './layout-field';
 import SearchField from './search-field';
 
-const TbankLeftPanel = ({ exColumn, exItemList, onChangeEnd, onRemoveTestItem }) => {
+const TbankLeftPanel = ({ exColumn, exTreeData, exItemList, onChangeEnd, onRemoveTestItem }) => {
   return (
     <StyledTbankLeftPanel>
       <div className="lpanel-head">시험 항목</div>
       <div className="lpanel-search">
-        <SearchField />
+        <SearchField exTreeData={exTreeData} />
       </div>
       <div className="lpanel-set-layout">
         <LayoutField

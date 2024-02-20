@@ -11,6 +11,7 @@ const AntModal = StyledModal(Modal);
 
 const TbankCenterPanel = ({
   exColumn,
+  exTreeData,
   exItemList,
   onAddTestItem,
   isOpenSelectItem,
@@ -71,6 +72,7 @@ const TbankCenterPanel = ({
         destroyOnClose
       >
         <AddExItem
+          exTreeData={exTreeData}
           onAddTestItem={onAddTestItem}
           isOpenSelectItem={isOpenSelectItem}
           onHandleSelectItem={onHandleSelectItem}

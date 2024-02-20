@@ -25,6 +25,15 @@ const StyledTbankLeftPanel = styled.div`
       }
     }
   }
+  .tree-search {
+    margin: 3px;
+  }
+  .tree-select {
+    margin: 3px;
+  }
+  .ex-list {
+    margin: 3px;
+  }
   .lpanel-set-layout {
   }
 `;

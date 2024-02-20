@@ -18,7 +18,7 @@ const StyledLayoutFIeld = styled.div`
   }
   .layout-content {
     overflow-y: scroll;
-    max-height: 350px;
+    max-height: 38vh;
     &::-webkit-scrollbar {
       width: 2px;
     }
@@ -54,7 +54,7 @@ const StyledLayoutFIeld = styled.div`
     }
     .exitem-content {
       padding: 5px;
-      height: 35px;
+      height: 30px;
       display: flex;
       flex-direction: column;
       justify-content: center;

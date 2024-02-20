@@ -1,0 +1,48 @@
+.ant-popover-content {
+}
+
+.popover-dept .ant-popover-inner-content {
+  width: 400px;
+  padding: 0px 0px 2px 0px;
+}
+
+.popover-title {
+  width: 100%;
+}
+.popoverButton {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+  color: white;
+}
+
+.popoverButtonStyle {
+  cursor: pointer;
+}
+.ant-popover-title {
+  min-width: 177px;
+  min-height: 32px;
+  margin: 0;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  color: rgb(255 255 255 / 85%);
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #0053a1;
+}
+
+.ant-popover-arrow-content {
+  --antd-arrow-background-color: #0053a1;
+}
+
+.tree-popover .ant-popover-inner-content {
+  padding: 0px 10px 2px 10px;
+  background-color: #0053a1;
+}
+
+.ant-popover-arrow-content {
+  --antd-arrow-background-color: #0053a1;
+}

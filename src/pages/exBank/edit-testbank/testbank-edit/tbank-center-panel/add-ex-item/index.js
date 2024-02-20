@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { selectExInfoList, selectManualCategoryInfo, selectExData } from '@/services/manual';
-import { StyledButton, StyledModal } from '@/components';
+import { selectExInfoList, selectExData } from '@/services/manual';
+import { StyledModal } from '@/components';
 import { Modal } from 'antd';
 import StyledAddExItem from './styled';
 import ETestTree from '@/pages/e-test/etest-tree';
@@ -10,8 +10,8 @@ import AddSelectItem from './add-select-item';
 
 const AntModal = StyledModal(Modal);
 
-const AddExItem = ({ onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
-  const [exTreeData, setExTreeData] = useState();
+const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
+  const [_exTreeData, setExTreeData] = useState();
   const [selectNodeId, setSelectNodeId] = useState();
   const [_eTestList, setETestList] = useState();
 
@@ -20,18 +20,11 @@ const AddExItem = ({ onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
   const [cPage, setPage] = useState(1);
   const [selectedEx, setSelectedEx] = useState();
 
-  //분류체계를 불러올 useQuery
-  const { data: treeData, isSuccess: isSuccessTreeData } = useQuery(
-    'selectManualCategoryInfo',
-    selectManualCategoryInfo
-  );
-
   useEffect(() => {
-    if (isSuccessTreeData && treeData) {
-      const { list } = treeData;
-      setExTreeData(list);
+    if (exTreeData) {
+      setExTreeData(exTreeData);
     }
-  }, [isSuccessTreeData, treeData]);
+  }, [exTreeData]);
 
   //문제 리스트를 불러오는 useQuery
   const {
@@ -60,7 +53,6 @@ const AddExItem = ({ onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
     if (selectExDataInfo && isSuccessSelectExData) {
       const { EX_QA } = selectExDataInfo || {};
       setSelectedEx(EX_QA);
-      // setOpenSelectItem(true);
       onHandleSelectItem(true);
     }
   }, [isSuccessSelectExData, selectExDataInfo]);
@@ -81,7 +73,7 @@ const AddExItem = ({ onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
   return (
     <StyledAddExItem>
       <div className="ex-category">
-        <ETestTree exTreeData={exTreeData} onSelectTreeNode={onSelectTreeNode} height="calc(100vh - 286px)" />
+        <ETestTree exTreeData={_exTreeData} onSelectTreeNode={onSelectTreeNode} height="calc(100vh - 286px)" />
       </div>
       <div className="category-info">
         <div className="ex-list">

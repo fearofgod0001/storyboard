@@ -10,8 +10,6 @@ import McqItemField from './mcq-item-field';
 const ExItem = ({ item, index, onRemoveTestItem }) => {
   const { EX_DATA, EX_IDX } = item || {};
 
-  console.debug('ExItem', item);
-
   const onChangeScore = (value) => {
     console.debug('onChangeScore', value);
   };
