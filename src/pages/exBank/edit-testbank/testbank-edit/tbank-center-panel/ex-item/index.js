@@ -1,26 +1,22 @@
-import { useEffect, useState } from "react";
-import { CloseOutlined } from "@ant-design/icons";
-import { TextAreaField } from "@/components/form-fields";
-import { Radio, Popconfirm } from "antd";
-import { useDrag, useDrop } from "react-dnd";
+import { useEffect, useState } from 'react';
+import { CloseOutlined } from '@ant-design/icons';
+import { TextAreaField } from '@/components/form-fields';
+import { Radio, Popconfirm } from 'antd';
+import { useDrag, useDrop } from 'react-dnd';
+import { InputNumberField } from '@/components/form-fields';
 
-import StyledExItem from "./styled";
-import InputNumberField from "./score-field";
-import McqItemField from "./mcq-item-field";
+import StyledExItem from './styled';
+import McqItemField from './mcq-item-field';
 
-const ExItem = ({ item, index, onRemoveTestItem }) => {
+const ExItem = ({ onChange, vlaue, item, index, onRemoveTestItem }) => {
   const { EX_DATA, EX_IDX } = item || {};
 
-  const onChangeScore = (value) => {
-    console.debug("onChangeScore", value);
-  };
-
   const onChangeRadio = (e) => {
-    console.debug("onChangeRadio", e.target.value);
+    console.debug('onChangeRadio', e.target.value);
   };
 
   const [{ isOver }, dropLeft] = useDrop({
-    accept: "field",
+    accept: 'field',
     canDrop: () => item.EX_DATA !== null,
     hover(dragItem, monitor) {},
     collect: (monitor) => ({
@@ -34,22 +30,22 @@ const ExItem = ({ item, index, onRemoveTestItem }) => {
       <div className="score">
         <div className="score-title">배점 </div>
         <div className="score-input">
-          <InputNumberField onChange={onChangeScore} />
+          <InputNumberField min={1} max={100} width={55} size="small" />
         </div>
-        <div className="delete-">
-          <Popconfirm
-            title="삭제하시겠습니까?"
-            placement="bottom"
-            onConfirm={() => onRemoveTestItem(index, EX_IDX)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <div className="delete-btn">
-              <CloseOutlined />
-            </div>
-          </Popconfirm>
-        </div>
+
+        <Popconfirm
+          title="삭제하시겠습니까?"
+          placement="bottom"
+          onConfirm={() => onRemoveTestItem(index, EX_IDX)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <div className="delete-btn">
+            <CloseOutlined />
+          </div>
+        </Popconfirm>
       </div>
+
       {EX_DATA && (
         <div>
           <div className="item-data">

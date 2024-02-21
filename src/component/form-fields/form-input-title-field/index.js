@@ -1,14 +1,7 @@
 import { Input } from 'antd';
-import { useState } from 'react';
 import StyledTitleField from './styled';
 
-export const FormTitleField = ({ placeholder }) => {
-  const [value, setValue] = useState();
-
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-
+export const FormTitleField = ({ onChange, value, placeholder }) => {
   return (
     <StyledTitleField>
       <div className="title" style={{ display: 'relatve' }}>

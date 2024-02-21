@@ -7,7 +7,7 @@ import SrchTestList from './search-test-list';
 
 const { Search } = Input;
 
-const SearchField = ({ exTreeData }) => {
+const SearchField = ({ exTreeData, onAddTestItem }) => {
   const [selectNodeId, setSelectNodeId] = useState();
   const [eTestList, setETestList] = useState();
   const [constTestList, setConTestList] = useState();
@@ -58,7 +58,7 @@ const SearchField = ({ exTreeData }) => {
         <SortTreeSelectField treeData={exTreeData} onSelectTreeNode={onSelectTreeNode} />
       </div>
       <div className="ex-list">
-        <SrchTestList eTestList={eTestList} />
+        <SrchTestList eTestList={eTestList} onAddTestItem={onAddTestItem} />
       </div>
     </>
   );

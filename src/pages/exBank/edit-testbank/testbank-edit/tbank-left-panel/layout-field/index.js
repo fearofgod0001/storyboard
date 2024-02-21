@@ -4,7 +4,7 @@ import { Popconfirm, Tooltip } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import StyledLayoutFIeld from './styled';
 
-const LayoutField = ({ exColumn, exItemList, onChangeEnd, onRemoveTestItem }) => {
+const LayoutField = ({ exColumn, exItemList, onAddTestItem, onDragEnd, onRemoveTestItem }) => {
   const [_itemList, setItemlist] = useState();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const LayoutField = ({ exColumn, exItemList, onChangeEnd, onRemoveTestItem }) =>
     <StyledLayoutFIeld>
       <div className="layout-title">레이아웃 설정</div>
 
-      <DragDropContext onDragEnd={onChangeEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable key="exItemList" droppableId="exItemList">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.droppableProps}>
@@ -63,8 +63,8 @@ const LayoutField = ({ exColumn, exItemList, onChangeEnd, onRemoveTestItem }) =>
                       </Draggable>
                     );
                   })}
+                {provided.placeholder}
               </div>
-              {provided.placeholder}
             </div>
           )}
         </Droppable>

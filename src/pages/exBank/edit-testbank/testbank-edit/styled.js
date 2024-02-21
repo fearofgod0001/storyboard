@@ -10,6 +10,12 @@ const StyledTestBankEdit = styled.div`
     min-width: 300px;
     height: 100%;
     border-right: 1px solid #efefef;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .tbank-center-panel {
@@ -18,7 +24,7 @@ const StyledTestBankEdit = styled.div`
   }
 
   .tbank-right-panel {
-    width: 500px;
+    width: 410px;
     min-width: 320px;
     height: 100%;
     border-left: 1px solid #efefef;

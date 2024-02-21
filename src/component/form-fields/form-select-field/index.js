@@ -40,3 +40,21 @@ export const FormTreeSelectField = ({
     />
   );
 };
+
+export const FormInitSelectField = ({ value, onChange, init, onHandleColumn }) => {
+  const _onChange = (value) => {
+    onChange(value);
+    typeof onHandleColumn && onHandleColumn(value);
+  };
+  return (
+    <Select
+      defaultValue={1}
+      style={{
+        width: 180,
+      }}
+      value={value}
+      onChange={_onChange}
+      options={init}
+    />
+  );
+};

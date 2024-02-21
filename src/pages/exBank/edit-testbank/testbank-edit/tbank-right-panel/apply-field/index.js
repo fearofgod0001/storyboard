@@ -1,36 +1,62 @@
 import { useState, useCallback, useRef } from 'react';
 import { StyledCard } from './styled-card';
-import { Card, Modal, Empty } from 'antd';
 import { StyledModal } from '@/components';
-import { TeamOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { Card, Modal, Empty } from 'antd';
+import { TeamOutlined, UserSwitchOutlined, UserOutlined } from '@ant-design/icons';
+import { StyledPanel, StyledApplyField } from './styled';
 import UserSelector from '@/components/user-selector';
-import StyledApplyField from './styled';
 
 const AntCard = StyledCard(Card);
+
 const AntModal = StyledModal(Modal);
 
-const ApplyField = ({ fieldValue }) => {
+const ManagerInfoView = ({ fieldValue }) => {
+  return (
+    <StyledPanel>
+      <div className="title">담당자</div>
+      <div className="separator" />
+      <div className="manager-panel">
+        {fieldValue &&
+          fieldValue.map((manager) => {
+            const { DEPT_INFO: deptInfo } = manager;
+            const mgrDept = deptInfo?.find((f) => f.IS_PRIMARY === '1');
+            return (
+              <div className="userInfo">
+                <div className="user">
+                  <UserOutlined style={{ marginRight: '2px' }} />
+                  {manager?.USER_NM}
+                </div>
+                <div className="dept">({mgrDept?.DEPT_NM})</div>
+              </div>
+            );
+          })}
+      </div>
+    </StyledPanel>
+  );
+};
+
+export const ApplyField = ({ value: fieldValue, onChange, pageMode }) => {
   const [isOpenCard, setIsOpenCard] = useState();
   const preValue = useRef(fieldValue);
 
   const onSelectedUser = useCallback(
     (resultSet) => {
-      const isChange = fieldValue && JSON.stringify(preValue.current) !== JSON.stringify(resultSet);
+      const isChange = JSON.stringify(preValue.current) !== JSON.stringify(resultSet);
       if (isChange) {
-        // onChange(resultSet);
-        // setIsOpenCard(false);
+        onChange(resultSet);
+        setIsOpenCard(false);
       }
-      setIsOpenCard(false);
     },
-
-    // [fieldValue, onChange]
-    [fieldValue]
+    [onChange]
   );
 
   const onCancel = () => {
     setIsOpenCard(false);
   };
-  return (
+
+  return ['V', 'R'].includes(pageMode) ? (
+    <ManagerInfoView fieldValue={fieldValue} />
+  ) : (
     <AntCard
       title="응시자"
       extra={
