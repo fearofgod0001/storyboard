@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledExItem = styled.div`
+export const StyledExItem = styled.div`
   width: 100%;
   min-height: 185px;
   margin: 12px 0;
@@ -31,7 +31,7 @@ const StyledExItem = styled.div`
   .item-data {
     .question {
       display: flex;
-      margin: 5px 109px 3px 14px;
+      margin: 5px 130px 3px 14px;
       .ques-icon {
         font-size: 30px;
         font-weight: 600;
@@ -64,4 +64,22 @@ const StyledExItem = styled.div`
   }
 `;
 
-export default StyledExItem;
+export const StyledDummyExItem = styled.div`
+  width: 100%;
+  min-height: 150px;
+  margin: 12px 0;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0.5;
+  .question {
+    display: flex;
+    margin: 5px 109px 3px 14px;
+    .ques-icon {
+      font-size: 30px;
+      font-weight: 600;
+    }
+  }
+`;

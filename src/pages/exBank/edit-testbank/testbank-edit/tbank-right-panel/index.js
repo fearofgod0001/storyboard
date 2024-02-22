@@ -67,16 +67,7 @@ const TbankRightPanel = ({ pageMode, onHandleColumn }) => {
         </Form.Item>
       </div>
       <div className="rpanel-apply">
-        <Form.Item
-          noStyle
-          name="EX_TEST_CANDIDATE"
-          rules={[
-            {
-              required: true,
-              message: '응시자를 설정해주세요',
-            },
-          ]}
-        >
+        <Form.Item noStyle name="EX_TEST_CANDIDATE">
           <ApplyField fieldValue={init} pageMode={pageMode} />
         </Form.Item>
       </div>

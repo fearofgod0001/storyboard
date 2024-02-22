@@ -41,12 +41,13 @@ const SrchListItem = ({ item, onAddTestItem }) => {
           return { EX_IDX: item.EX_IDX, EX_DATA: itemData.EX_DATA, EX_TITLE: item.EX_TITLE, EX_TYPE: item.EX_TYPE };
         }
       },
-      end: (item, monitor) => {
-        const didDrop = monitor.didDrop();
-        if (didDrop) {
-          onAddTestItem(item);
-        }
-      },
+      // end: (item, monitor) => {
+      //   const didDrop = monitor.didDrop();
+
+      //   // if (didDrop) {
+      //   //   onAddTestItem(item);
+      //   // }
+      // },
       collect: (monitor) => {
         return { isDragging: monitor.isDragging() };
       },

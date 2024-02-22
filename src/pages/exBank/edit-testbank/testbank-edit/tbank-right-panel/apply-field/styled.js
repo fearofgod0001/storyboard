@@ -86,7 +86,7 @@ export const StyledApplyField = styled.div`
       .user-name {
         width: 100%;
         white-space: nowrap;
-        overflow: hidden;
+        /* overflow: hidden; */
         text-overflow: ellipsis;
         padding: 5px;
       }

@@ -1,64 +1,71 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
-import { CheckListField } from '@/components/form-fields';
-import { AutoComplete, Input, Table, Pagination } from 'antd';
-import StyledAntdTable from '@/components/styledElement/styled-table';
-import StyledETestList from './styled';
+import React, { useCallback, useEffect, useState } from "react";
+import moment from "moment";
+import { CheckListField } from "@/components/form-fields";
+import { AutoComplete, Input, Table, Pagination } from "antd";
+import StyledAntdTable from "@/components/styledElement/styled-table";
+import StyledETestList from "./styled";
 
 const AntTable = StyledAntdTable(Table);
 
 const columns = [
   {
     title: `NO`,
-    dataIndex: 'RNUM',
-    align: 'center',
-    width: '10px',
+    dataIndex: "RNUM",
+    align: "center",
+    width: "10px",
   },
   {
     title: `경로`,
-    dataIndex: 'FULL_PATH',
-    align: 'center',
-    width: '300px',
+    dataIndex: "FULL_PATH",
+    align: "center",
+    width: "300px",
     render: (title, record) => {
       return <div className="full-path">{record.FULL_PATH}</div>;
     },
   },
   {
     title: `문제`,
-    dataIndex: 'EX_TITLE',
-    align: 'center',
-    width: '700px',
+    dataIndex: "EX_TITLE",
+    align: "center",
+    width: "700px",
     render: (title) => {
       return <div className="manual-title">{title}</div>;
     },
   },
   {
     title: `형식`,
-    dataIndex: 'EX_TYPE',
-    align: 'center',
-    width: '100px',
+    dataIndex: "EX_TYPE",
+    align: "center",
+    width: "100px",
     render: (title) => {
-      return <div>{title === 'MCQ' ? '객관식' : '주관식'}</div>;
+      return <div>{title === "MCQ" ? "객관식" : "주관식"}</div>;
     },
   },
   {
     title: `등록자`,
-    dataIndex: 'REG_USER_NM',
-    align: 'center',
-    width: '180px',
+    dataIndex: "REG_USER_NM",
+    align: "center",
+    width: "180px",
   },
   {
     title: `등록일`,
-    dataIndex: 'MLC_PUB_DTTM',
-    align: 'center',
-    width: '150px',
-    render: (text) => moment(text).format('YYYY-MM-DD'),
+    dataIndex: "MLC_PUB_DTTM",
+    align: "center",
+    width: "150px",
+    render: (text) => moment(text).format("YYYY-MM-DD"),
   },
 ];
 
 const { Search } = Input;
 
-const ETestList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChangePage }) => {
+const ETestList = ({
+  eTestList,
+  onShowEdit,
+  cPage,
+  pageSize,
+  totCount,
+  onChangePage,
+}) => {
   const [_eTestList, setETestList] = useState();
   const [keyword, setKeyword] = useState();
   const [options, setOption] = useState([]);
@@ -91,7 +98,7 @@ const ETestList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChangeP
 
   return (
     <StyledETestList>
-      <div style={{ padding: '10px 0 0 14px' }}>
+      <div style={{ padding: "10px 0 0 14px" }}>
         <CheckListField onChangeTestType={onChangeTestType} />
       </div>
 
@@ -99,16 +106,21 @@ const ETestList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChangeP
         <AutoComplete
           popupClassName="certain-category-search-dropdown"
           popupMatchSelectWidth={500}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           options={options}
           size="large"
         >
-          <Search size="large" placeholder="검색어를 입력해주세요" prefix={'검색 :'} onChange={onSearch} />
+          <Search
+            size="large"
+            placeholder="검색어를 입력해주세요"
+            prefix={"검색 :"}
+            onChange={onSearch}
+          />
         </AutoComplete>
       </div>
 
       <AntTable
-        cursor={'pointer'}
+        cursor={"pointer"}
         columns={columns}
         dataSource={_eTestList}
         onRow={(record, rowIndex) => {
@@ -116,8 +128,14 @@ const ETestList = ({ eTestList, onShowEdit, cPage, pageSize, totCount, onChangeP
         }}
         pagination={false}
       />
-      <div className="page-panel" style={{ textAlign: 'center' }}>
-        <Pagination defaultCurrent={1} current={cPage} pageSize={pageSize} total={totCount} onChange={onChangePage} />
+      <div className="page-panel" style={{ textAlign: "center" }}>
+        <Pagination
+          defaultCurrent={1}
+          current={cPage}
+          pageSize={pageSize}
+          total={totCount}
+          onChange={onChangePage}
+        />
       </div>
     </StyledETestList>
   );

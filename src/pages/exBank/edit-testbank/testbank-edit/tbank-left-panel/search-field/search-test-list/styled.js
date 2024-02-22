@@ -17,7 +17,8 @@ const StyledSrchTestList = styled.div`
   }
   .list-content {
     overflow-y: scroll;
-    max-height: 26vh;
+    /* max-height: 26vh; */
+    max-height: 68vh;
     &::-webkit-scrollbar {
       width: 2px;
     }

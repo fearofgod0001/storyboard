@@ -9,14 +9,14 @@ const TbankLeftPanel = ({ exColumn, exTreeData, exItemList, onDragEnd, onAddTest
       <div className="lpanel-search">
         <SearchField exTreeData={exTreeData} onAddTestItem={onAddTestItem} />
       </div>
-      <div className="lpanel-set-layout">
+      {/* <div className="lpanel-set-layout">
         <LayoutField
           exColumn={exColumn}
           onDragEnd={onDragEnd}
           exItemList={exItemList}
           onRemoveTestItem={onRemoveTestItem}
         />
-      </div>
+      </div> */}
     </StyledTbankLeftPanel>
   );
 };

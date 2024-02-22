@@ -47,11 +47,7 @@ const TestBankEdit = ({
           <div className="tbank-center-panel">
             <TbankCenterPanel
               exColumn={exColumn}
-              onDragEnd={onDragEnd}
               exTreeData={exTreeData}
-              exItemList={exItemList}
-              onAddTestItem={onAddTestItem}
-              onRemoveTestItem={onRemoveTestItem}
               isOpenSelectItem={isOpenSelectItem}
               onHandleSelectItem={onHandleSelectItem}
             />

@@ -1,16 +1,21 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { selectExInfoList, selectExData } from '@/services/manual';
-import { StyledModal } from '@/components';
-import { Modal } from 'antd';
-import StyledAddExItem from './styled';
-import ETestTree from '@/pages/e-test/etest-tree';
-import ETestList from '@/pages/e-test/etest-list';
-import AddSelectItem from './add-select-item';
+import { useEffect, useState, useCallback } from "react";
+import { useMutation, useQuery } from "react-query";
+import { selectExInfoList, selectExData } from "@/services/manual";
+import { StyledModal } from "@/components";
+import { Modal } from "antd";
+import StyledAddExItem from "./styled";
+import ETestTree from "@/pages/exBank/etest-tree";
+import ETestList from "@/pages/exBank/etest-list";
+import AddSelectItem from "./add-select-item";
 
 const AntModal = StyledModal(Modal);
 
-const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelectItem }) => {
+const AddExItem = ({
+  exTreeData,
+  onAddTestItem,
+  isOpenSelectItem,
+  onHandleSelectItem,
+}) => {
   const [_exTreeData, setExTreeData] = useState();
   const [selectNodeId, setSelectNodeId] = useState();
   const [_eTestList, setETestList] = useState();
@@ -31,8 +36,12 @@ const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelect
     data: exDataListList,
     isSuccess: isSuccessExInfo,
     refetch: onRefetchExData,
-  } = useQuery(['selectExInfoList', cPage, pageSize, selectNodeId], () =>
-    selectExInfoList({ CPAGE: cPage, PAGE_SIZE: pageSize, EX_CODE_ID: selectNodeId })
+  } = useQuery(["selectExInfoList", cPage, pageSize, selectNodeId], () =>
+    selectExInfoList({
+      CPAGE: cPage,
+      PAGE_SIZE: pageSize,
+      EX_CODE_ID: selectNodeId,
+    })
   );
 
   useEffect(() => {
@@ -47,7 +56,7 @@ const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelect
     mutate: mutateSelectExData,
     isSuccess: isSuccessSelectExData,
     data: selectExDataInfo,
-  } = useMutation('selectExData', selectExData);
+  } = useMutation("selectExData", selectExData);
 
   useEffect(() => {
     if (selectExDataInfo && isSuccessSelectExData) {
@@ -73,7 +82,11 @@ const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelect
   return (
     <StyledAddExItem>
       <div className="ex-category">
-        <ETestTree exTreeData={_exTreeData} onSelectTreeNode={onSelectTreeNode} height="calc(100vh - 286px)" />
+        <ETestTree
+          exTreeData={_exTreeData}
+          onSelectTreeNode={onSelectTreeNode}
+          height="calc(100vh - 286px)"
+        />
       </div>
       <div className="category-info">
         <div className="ex-list">
@@ -86,7 +99,7 @@ const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelect
           />
         </div>
         <AntModal
-          style={{ top: '100px' }}
+          style={{ top: "100px" }}
           title={`${selectedEx?.EX_TITLE}`}
           onCancel={() => onHandleSelectItem(false)}
           width={500}
@@ -94,7 +107,10 @@ const AddExItem = ({ exTreeData, onAddTestItem, isOpenSelectItem, onHandleSelect
           footer={false}
           destroyOnClose
         >
-          <AddSelectItem selectedEx={selectedEx} onAddTestItem={onAddTestItem} />
+          <AddSelectItem
+            selectedEx={selectedEx}
+            onAddTestItem={onAddTestItem}
+          />
         </AntModal>
       </div>
     </StyledAddExItem>

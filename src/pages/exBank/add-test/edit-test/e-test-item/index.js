@@ -1,12 +1,12 @@
-import { InPutDefaultField, TextAreaField } from '@/components/form-fields';
-import { useEffect, useState } from 'react';
-import StyledETestItem from './styled';
-import ItemMcList from './item-mc-list';
+import { InPutDefaultField, TextAreaField } from "@/components/form-fields";
+import { useEffect, useState } from "react";
+import StyledETestItem from "./styled";
+import ItemMcList from "./item-mc-list";
 
 const ETestItem = ({ value, onChange, testType, pageMode, selectedEx }) => {
   const { EX_DESCRIP, EX_MCQ_LIST, EX_ANSWER, EX_EXPLAIN } = value || {};
 
-  console.debug('ETestItem value', value);
+  console.debug("ETestItem value", value);
 
   const [tstType, setTstType] = useState();
   const [mcqAns, setMcqAns] = useState();
@@ -47,13 +47,17 @@ const ETestItem = ({ value, onChange, testType, pageMode, selectedEx }) => {
     <StyledETestItem>
       <div className="qa-descrip">
         <div className="descrip-title"> 문제 내용</div>
-        <TextAreaField pageMode={pageMode} onChange={onChangeDescrip} value={EX_DESCRIP} />
+        <TextAreaField
+          pageMode={pageMode}
+          onChange={onChangeDescrip}
+          value={EX_DESCRIP}
+        />
       </div>
 
-      {tstType === 'MCQ' && (
+      {tstType === "MCQ" && (
         <div className="item-count">
           <div className="item-title">항목 갯수</div>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <ItemMcList
               mcqAns={mcqAns}
               pageMode={pageMode}
@@ -67,12 +71,20 @@ const ETestItem = ({ value, onChange, testType, pageMode, selectedEx }) => {
 
       <div className="qa-answer">
         <div className="ans-title"> 정답 </div>
-        <InPutDefaultField pageMode={pageMode} onChange={onChangeAnswer} value={EX_ANSWER} />
+        <InPutDefaultField
+          pageMode={pageMode}
+          onChange={onChangeAnswer}
+          value={EX_ANSWER}
+        />
       </div>
 
       <div className="qa-explain">
         <div className="explain-title"> 해설 </div>
-        <TextAreaField pageMode={pageMode} onChange={onChangeExplain} value={EX_EXPLAIN} />
+        <TextAreaField
+          pageMode={pageMode}
+          onChange={onChangeExplain}
+          value={EX_EXPLAIN}
+        />
       </div>
     </StyledETestItem>
   );

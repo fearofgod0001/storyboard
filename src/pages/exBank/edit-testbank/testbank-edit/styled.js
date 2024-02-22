@@ -22,9 +22,7 @@ const StyledTestBankEdit = styled.div`
     width: 100%;
     height: 100%;
   }
-
   .tbank-right-panel {
-    width: 410px;
     min-width: 320px;
     height: 100%;
     border-left: 1px solid #efefef;

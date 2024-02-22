@@ -1,11 +1,12 @@
-import { StyledButton } from '@/components';
-import StyledAddSelectItem from './styled';
+import { StyledButton } from "@/components";
+import StyledAddSelectItem from "./styled";
 const AddSelectItem = ({ selectedEx, onAddTestItem }) => {
-  const { EX_DESCRIP, EX_MCQ_LIST, EX_ANSWER, EX_EXPLAIN } = selectedEx?.EX_DATA || {};
+  const { EX_DESCRIP, EX_MCQ_LIST, EX_ANSWER, EX_EXPLAIN } =
+    selectedEx?.EX_DATA || {};
 
   return (
     <StyledAddSelectItem>
-      <div className="selectitem-descrip" style={{ display: 'flex' }}>
+      <div className="selectitem-descrip" style={{ display: "flex" }}>
         <div className="descrip-title">Q.</div>
         <div className="descrip-content">{EX_DESCRIP}</div>
       </div>
@@ -29,7 +30,10 @@ const AddSelectItem = ({ selectedEx, onAddTestItem }) => {
         <div className="explain-content"> {EX_EXPLAIN}</div>
       </div>
       <div className="footer">
-        <StyledButton className="btn-primary btn-xs mr5" onClick={() => onAddTestItem(selectedEx)}>
+        <StyledButton
+          className="btn-primary btn-xs mr5"
+          onClick={() => onAddTestItem(selectedEx)}
+        >
           추가
         </StyledButton>
       </div>

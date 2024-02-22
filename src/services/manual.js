@@ -1,4 +1,4 @@
-import { callApi } from "../common/axios/axiosInstances";
+import { callApi } from "@/common/axios";
 
 export const selectManualTitle = async (data) => {
   return await callApi({
@@ -146,6 +146,46 @@ export const selectContentReqDataByMlcIdx = async (data) => {
 export const updateContReqDataByPosId = async (data) => {
   return await callApi({
     url: "/api/v1/manual/updateContReqDataByPosId",
+    method: "POST",
+    data: { param: data },
+  });
+};
+
+export const selectExInfoList = async (data) => {
+  return await callApi({
+    url: "/api/v1/manual/selectExInfoList",
+    method: "POST",
+    data: { param: data },
+  });
+};
+
+export const selectExData = async (data) => {
+  return await callApi({
+    url: "/api/v1/manual/selectExData",
+    method: "POST",
+    data: { param: data },
+  });
+};
+
+export const insertExData = async (data) => {
+  return await callApi({
+    url: "/api/v1/manual/insertExData",
+    method: "POST",
+    data: { param: data },
+  });
+};
+
+export const updateExData = async (data) => {
+  return await callApi({
+    url: "/api/v1/manual/updateExData",
+    method: "POST",
+    data: { param: data },
+  });
+};
+
+export const deleteExData = async (data) => {
+  return await callApi({
+    url: "/api/v1/manual/deleteExData",
     method: "POST",
     data: { param: data },
   });

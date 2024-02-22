@@ -1,7 +1,7 @@
-import { Form, Modal } from 'antd';
-import { useMutation, useQuery } from 'react-query';
-import { ContentPannel } from '@/components';
-import { useState, useCallback, useEffect } from 'react';
+import { Form, Modal } from "antd";
+import { useMutation, useQuery } from "react-query";
+import { ContentPannel } from "@/components";
+import { useState, useCallback, useEffect } from "react";
 import {
   selectExInfoList,
   selectExData,
@@ -9,50 +9,52 @@ import {
   updateExData,
   deleteExData,
   selectManualCategoryInfo,
-} from '@/services/manual';
-import { StyledButton, StyledModal } from '@/components/styledElement';
-import uuid from 'react-uuid';
-import EditTest from './edit-test';
-import StyledETest from './styled';
-import EtestTree from './etest-tree';
-import ETestList from './etest-list';
-import update from 'immutability-helper';
+} from "@/services/manual";
+import { StyledButton, StyledModal } from "@/components/styledElement";
+import uuid from "react-uuid";
+import EditTest from "./edit-test";
+import StyledETest from "./styled";
+import EtestTree from "./etest-tree";
+import ETestList from "./etest-list";
+import update from "immutability-helper";
 
 const AntModal = StyledModal(Modal);
 
 const eTestList = [
   {
     RNUM: 1,
-    FULL_PATH: ' > 수신 > 수신업무편 ',
+    FULL_PATH: " > 수신 > 수신업무편 ",
     CODE_ID: 227,
     EX_IDX: 15933,
-    EX_TITLE: '수신업무 고르기',
-    EX_TYPE: 'MCQ',
+    EX_TITLE: "수신업무 고르기",
+    EX_TYPE: "MCQ",
     EX_DATA: {
-      EX_DESCRIP: '해당 업무중 수신 업무가 아닌 것을 고르시오.해당 업무중 수신 업무가 아닌 것을 고르시오.',
-      EX_MCQ_LIST: ['예제1', '예제2', '예제3', '예제4', '예제5'],
+      EX_DESCRIP:
+        "해당 업무중 수신 업무가 아닌 것을 고르시오.해당 업무중 수신 업무가 아닌 것을 고르시오.",
+      EX_MCQ_LIST: ["예제1", "예제2", "예제3", "예제4", "예제5"],
       EX_ANSWER: 2,
-      EX_EXPLAIN: '수신 업무의 종류는 예제1 예제3 예제4 예제5 이다.',
+      EX_EXPLAIN: "수신 업무의 종류는 예제1 예제3 예제4 예제5 이다.",
     },
-    REG_USER_NM: '시스템관리자',
-    MLC_PUB_DTTM: '2024-01-30T15:00:00.000+00:00',
-    MLC_REG_DTTM: '2024-01-31T19:04:15.000+00:00',
+    REG_USER_NM: "시스템관리자",
+    MLC_PUB_DTTM: "2024-01-30T15:00:00.000+00:00",
+    MLC_REG_DTTM: "2024-01-31T19:04:15.000+00:00",
   },
   {
     RNUM: 2,
-    FULL_PATH: ' > 여신 > 가계여신상품편',
+    FULL_PATH: " > 여신 > 가계여신상품편",
     CODE_ID: 229,
     EX_IDX: 15943,
-    EX_TITLE: '가게여신상품 설명하기',
-    EX_TYPE: 'SAQ',
+    EX_TITLE: "가게여신상품 설명하기",
+    EX_TYPE: "SAQ",
     EX_DATA: {
-      EX_DESCRIP: '가계여신 상품에 대해서 설명하시오.가계여신 상품에 대해서 설명하시오.',
-      EX_ANSWER: '가계여신',
-      EX_EXPLAIN: '가계여신은 가계여신 상품입니다.',
+      EX_DESCRIP:
+        "가계여신 상품에 대해서 설명하시오.가계여신 상품에 대해서 설명하시오.",
+      EX_ANSWER: "가계여신",
+      EX_EXPLAIN: "가계여신은 가계여신 상품입니다.",
     },
-    REG_USER_NM: '이태석',
-    MLC_PUB_DTTM: '2024-01-18T15:00:00.000+00:00',
-    MLC_REG_DTTM: '2024-02-02T00:45:40.000+00:00',
+    REG_USER_NM: "이태석",
+    MLC_PUB_DTTM: "2024-01-18T15:00:00.000+00:00",
+    MLC_REG_DTTM: "2024-02-02T00:45:40.000+00:00",
   },
 ];
 
@@ -61,40 +63,40 @@ const exTreeData = {
     {
       PRNT_CODE_ID: -1,
       CODE_ID: 215,
-      CODE_CD: '7844',
-      CODE_NM: '문제은행',
+      CODE_CD: "7844",
+      CODE_NM: "문제은행",
       SORT_SQ: 0,
       SORT_SUB_SQ: 1,
     },
     {
       PRNT_CODE_ID: 215,
       CODE_ID: 226,
-      CODE_CD: '7853',
-      CODE_NM: '수신',
+      CODE_CD: "7853",
+      CODE_NM: "수신",
       SORT_SQ: 1,
       SORT_SUB_SQ: 1,
     },
     {
       PRNT_CODE_ID: 226,
       CODE_ID: 227,
-      CODE_CD: '7853',
-      CODE_NM: '수신업무편',
+      CODE_CD: "7853",
+      CODE_NM: "수신업무편",
       SORT_SQ: 1,
       SORT_SUB_SQ: 1,
     },
     {
       PRNT_CODE_ID: 215,
       CODE_ID: 228,
-      CODE_CD: '7853',
-      CODE_NM: '여신',
+      CODE_CD: "7853",
+      CODE_NM: "여신",
       SORT_SQ: 1,
       SORT_SUB_SQ: 1,
     },
     {
       PRNT_CODE_ID: 228,
       CODE_ID: 229,
-      CODE_CD: '7853',
-      CODE_NM: '가계여신상품편',
+      CODE_CD: "7853",
+      CODE_NM: "가계여신상품편",
       SORT_SQ: 1,
       SORT_SUB_SQ: 1,
     },
@@ -120,7 +122,7 @@ const AddTest = ({}) => {
 
   //분류체계를 불러올 useQuery
   const { data: treeData, isSuccess: isSuccessTreeData } = useQuery(
-    'selectManualCategoryInfo',
+    "selectManualCategoryInfo",
     selectManualCategoryInfo
   );
 
@@ -136,8 +138,12 @@ const AddTest = ({}) => {
     data: exDataListList,
     isSuccess: isSuccessExInfo,
     refetch: onRefetchExData,
-  } = useQuery(['selectExInfoList', cPage, pageSize, selectNodeId], () =>
-    selectExInfoList({ CPAGE: cPage, PAGE_SIZE: pageSize, EX_CODE_ID: selectNodeId })
+  } = useQuery(["selectExInfoList", cPage, pageSize, selectNodeId], () =>
+    selectExInfoList({
+      CPAGE: cPage,
+      PAGE_SIZE: pageSize,
+      EX_CODE_ID: selectNodeId,
+    })
   );
 
   useEffect(() => {
@@ -153,7 +159,7 @@ const AddTest = ({}) => {
     mutate: mutateSelectExData,
     isSuccess: isSuccessSelectExData,
     data: selectExDataInfo,
-  } = useMutation('selectExData', selectExData);
+  } = useMutation("selectExData", selectExData);
 
   useEffect(() => {
     if (selectExDataInfo && isSuccessSelectExData) {
@@ -167,7 +173,7 @@ const AddTest = ({}) => {
     mutate: mutateInsertExData,
     isSuccess: isSuccessInsertExData,
     data: insertExDataData,
-  } = useMutation('insertExData', insertExData);
+  } = useMutation("insertExData", insertExData);
 
   useEffect(() => {
     if (isSuccessInsertExData && insertExDataData) {
@@ -181,7 +187,7 @@ const AddTest = ({}) => {
     mutate: mutateUpdateExData,
     isSuccess: isSuccessUpdateExData,
     data: UpdateExDataData,
-  } = useMutation('updateExData', updateExData);
+  } = useMutation("updateExData", updateExData);
 
   useEffect(() => {
     if (isSuccessUpdateExData && UpdateExDataData) {
@@ -195,7 +201,7 @@ const AddTest = ({}) => {
     mutate: mutateDeleteExData,
     isSuccess: isSuccessDeleteExData,
     data: deleteExDataData,
-  } = useMutation('deleteExData', deleteExData);
+  } = useMutation("deleteExData", deleteExData);
 
   useEffect(() => {
     if (isSuccessDeleteExData && deleteExDataData) {
@@ -226,7 +232,7 @@ const AddTest = ({}) => {
     form.setFieldsValue({ ...record });
     setTestType(EX_TYPE);
     setSelectedEx(record);
-    setPageMode('V');
+    setPageMode("V");
     setIsOpenAddTest(true);
   }, []);
 
@@ -238,8 +244,8 @@ const AddTest = ({}) => {
 
   //문제 추가 모달창을 여는 함수
   const onCreateTest = () => {
-    setPageMode('N');
-    setAction('N');
+    setPageMode("N");
+    setAction("N");
     setIsOpenAddTest(true);
   };
 
@@ -271,19 +277,26 @@ const AddTest = ({}) => {
 
   const onFinish = (info) => {
     if (info) {
-      console.debug('info', info);
+      console.debug("info", info);
       const { EX_IDX } = info || {};
-      if (action === 'N') {
+      if (action === "N") {
         const exIdx = uuid();
         //새로운 문제 추가 로직
         setETestList((prev) => {
           return update(prev, {
-            $push: [{ ...info, RNUM: prev.length + 1, REG_USER_NM: '관리자', EX_IDX: exIdx }],
+            $push: [
+              {
+                ...info,
+                RNUM: prev.length + 1,
+                REG_USER_NM: "관리자",
+                EX_IDX: exIdx,
+              },
+            ],
           });
         });
         mutateInsertExData({ ...info, EX_IDX: exIdx });
         setAction();
-      } else if (action === 'M') {
+      } else if (action === "M") {
         //기존 문제 수정 로직
         setETestList((prev) => {
           const index = prev.findIndex((f) => f.EX_IDX === EX_IDX);
@@ -313,7 +326,7 @@ const AddTest = ({}) => {
 
   const onChangeAction = (_action) => {
     setAction(_action);
-    if (_action === 'D') {
+    if (_action === "D") {
       const { EX_IDX } = selectedEx || {};
       mutateDeleteExData({ EX_IDX: EX_IDX });
     }
@@ -322,11 +335,14 @@ const AddTest = ({}) => {
   return (
     <StyledETest>
       <div className="left-panel">
-        <EtestTree exTreeData={exTreeData} onSelectTreeNode={onSelectTreeNode} />
+        <EtestTree
+          exTreeData={exTreeData}
+          onSelectTreeNode={onSelectTreeNode}
+        />
       </div>
 
       <div className="content-panel">
-        <ContentPannel pathInfo={'문제항목 관리'} renderButton={renderButton}>
+        <ContentPannel pathInfo={"문제항목 관리"} renderButton={renderButton}>
           <ETestList
             cPage={cPage}
             pageSize={pageSize}
@@ -338,7 +354,7 @@ const AddTest = ({}) => {
           <AntModal
             open={isOpenAddTest}
             title={
-              <div className="ant-modal-title" style={{ color: 'white' }}>
+              <div className="ant-modal-title" style={{ color: "white" }}>
                 문제 추가
               </div>
             }
