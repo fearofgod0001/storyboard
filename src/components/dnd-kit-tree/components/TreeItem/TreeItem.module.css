@@ -1,0 +1,204 @@
+.TreeItem {
+  display: flex;
+  height: 40px;
+  padding-left: 10px;
+  border-top: 1px solid #f1f1f1;
+  color: #386a98;
+  font-weight: 600;
+  min-width: 100%;
+  white-space: nowrap;
+  position: relative;
+  text-align: left;
+  align-items: center;
+  animation: fadein 0.3s;
+  &:hover {
+    background-color: #eef8fe;
+    cursor: pointer;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.title {
+  font-size: 14px;
+  color: black;
+  cursor: pointer;
+}
+
+.placeholder {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 100%;
+}
+
+.Count {
+  position: absolute;
+  top: -20px;
+  left: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #2389ff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ghostHide {
+  opacity: 0;
+}
+
+.ghostWrap {
+  .TreeItem {
+    .ghost {
+      display: flex;
+      height: 30px;
+      background-color: #36c2f6;
+      border: 4px dotted #4aec7b;
+    }
+  }
+
+  /* &:not(.indicator) {
+    opacity: 0.5;
+  } */
+}
+
+.diableDroppable {
+  width: 20px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+}
+
+.clone {
+  display: none;
+}
+
+.handlePointer {
+  cursor: pointer;
+}
+
+.handle {
+  width: 20px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.handling {
+  width: 20px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grabbing;
+}
+
+.rst__lineBlock,
+.rst__absoluteLineBlock {
+  height: 100%;
+  position: relative;
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rst__absoluteLineBlock {
+  position: absolute;
+  top: 0;
+}
+
+.rst_lineInit {
+  width: initial;
+  left: initial;
+  top: initial;
+  height: initial;
+}
+
+.rst__lineHalfHorizontalRight::before,
+.rst__handleLineHalfHorizontalRight::before,
+.rst__lineFullVertical::after,
+.rst__lineHalfVerticalTop::after,
+.rst__lineHalfVerticalBottom::after,
+.rst__handleLineHalfVerticalBottom::after,
+.rst__handleLineHalfVerticalTop::after {
+  position: absolute;
+  content: '';
+  background-color: rgb(189, 188, 188);
+}
+.rst__handleLineHalfHorizontalRight::before {
+  height: 1px;
+  top: 57%;
+  left: 17px;
+  width: 25%;
+}
+.rst__handleLineHalfVerticalBottom::after {
+  width: 1px;
+  left: 50%;
+  top: 24px;
+  height: 40%;
+}
+
+.rst__handleLineHalfVerticalTop::after {
+  width: 1px;
+  left: 50%;
+  top: 0px;
+  height: 33%;
+}
+
+.rst__lineHalfHorizontalRight::before {
+  height: 1px;
+  top: 50%;
+  right: 0;
+  width: 50%;
+}
+
+.rst__rtl.rst__lineHalfHorizontalRight::before {
+  left: 0;
+  right: initial;
+}
+
+rst__lineHalfHorizontalLeft {
+  height: 1px;
+  top: 50%;
+  right: 0;
+  width: 50%;
+}
+
+.rst__lineFullVertical::after,
+.rst__lineHalfVerticalTop::after,
+.rst__lineHalfVerticalBottom::after {
+  width: 1px;
+  left: 50%;
+  top: 0;
+  height: 100%;
+}
+
+.rst__lineHalfVerticalTop::after {
+  height: 50%;
+}
+
+.rst__lineHalfVerticalBottom::after {
+  top: auto;
+  bottom: 0;
+  height: 50%;
+}
