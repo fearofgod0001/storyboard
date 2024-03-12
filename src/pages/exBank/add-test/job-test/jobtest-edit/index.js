@@ -5,7 +5,7 @@ import TbankRightPanel from './tbank-right-panel';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Form, Input } from 'antd';
-const TestBankEdit = ({
+const JobTestEdit = ({
   form,
   action,
   pageMode,
@@ -36,6 +36,9 @@ const TestBankEdit = ({
           <Form.Item name="EX_TEST_IDX" hidden>
             <Input />
           </Form.Item>
+          <Form.Item name="EX_TEST_TYPE" hidden>
+            <Input />
+          </Form.Item>
           <Form.Item name="USER_START_DATE" hidden>
             <Input />
           </Form.Item>
@@ -54,19 +57,15 @@ const TestBankEdit = ({
               onHandleSelectItem={onHandleSelectItem}
             />
           </div>
-          <div className="tbank-right-panel">
-            <TbankRightPanel
-              form={form}
-              action={action}
-              onFinish={onFinish}
-              pageMode={pageMode}
-              onHandleColumn={onHandleColumn}
-            />
-          </div>
+          {['M', 'N'].includes(pageMode) && (
+            <div className="tbank-right-panel">
+              <TbankRightPanel pageMode={pageMode} onHandleColumn={onHandleColumn} />
+            </div>
+          )}
         </Form>
       </DndProvider>
     </StyledTestBankEdit>
   );
 };
 
-export default TestBankEdit;
+export default JobTestEdit;

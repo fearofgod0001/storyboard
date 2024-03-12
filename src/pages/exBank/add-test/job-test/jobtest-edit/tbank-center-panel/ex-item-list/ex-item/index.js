@@ -87,7 +87,7 @@ const ExItem = ({ value, onChange, action, item, index, pageMode, onAddTestItem,
                   })}
               </Radio.Group>
             </div>
-            {pageMode === 'V' && (
+            {pageMode === 'V' && action === 'S' && (
               <div className="user-answer">
                 <div className="answer-title"> 정답</div>
                 <TextAreaField

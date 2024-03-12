@@ -1,9 +1,8 @@
 import { Form } from 'antd';
-import { DatePickerField, InitSelectField, InputNumberField } from '@/components/form-fields';
+import { DatePickerField, InitSelectField, InputNumberField, SwitchField } from '@/components/form-fields';
 
 import StyledTbankRightPanel from './styled';
 import { ApplyField } from './apply-field';
-import CountDownField from './coutdown-field';
 
 const initColumn = [
   {
@@ -22,6 +21,10 @@ const initStatus = [
     label: '대기',
   },
   {
+    value: 'P',
+    label: '진행',
+  },
+  {
     value: 'E',
     label: '종료',
   },
@@ -31,7 +34,7 @@ const initStatus = [
   },
 ];
 
-const TbankRightPanel = ({ form, action, onFinish, pageMode, onHandleColumn }) => {
+const TbankRightPanel = ({ pageMode, onHandleColumn }) => {
   return (
     <StyledTbankRightPanel>
       <div className="rpanel-head"> 시험 정보 </div>
@@ -64,7 +67,7 @@ const TbankRightPanel = ({ form, action, onFinish, pageMode, onHandleColumn }) =
             },
           ]}
         >
-          <InputNumberField min={1} max={300} width={180} pageMode={pageMode} />
+          <InputNumberField min={1} max={600} width={180} pageMode={pageMode} />
         </Form.Item>
       </div>
       {['M', 'N'].includes(pageMode) && (
@@ -104,17 +107,46 @@ const TbankRightPanel = ({ form, action, onFinish, pageMode, onHandleColumn }) =
         </div>
       )}
       {['M', 'N'].includes(pageMode) && (
+        <div className="rpanel-status">
+          <div className="title">랜덤</div>
+          <div className="separator"></div>
+          <Form.Item
+            noStyle
+            name="EX_RANDOM"
+            rules={[
+              {
+                required: true,
+                message: '랜덤 여부를 선택해주세요',
+              },
+            ]}
+          >
+            <SwitchField width={180} />
+          </Form.Item>
+        </div>
+      )}
+      {['M', 'N'].includes(pageMode) && (
+        <div className="rpanel-status">
+          <div className="title">랜덤 문항수</div>
+          <div className="separator"></div>
+          <Form.Item
+            noStyle
+            name="EX_RANDOM_CNT"
+            rules={[
+              {
+                required: true,
+                message: '랜덤 문항을 설정해주세요',
+              },
+            ]}
+          >
+            <InputNumberField min={0} max={100} width={180} pageMode={pageMode} />
+          </Form.Item>
+        </div>
+      )}
+      {['M', 'N'].includes(pageMode) && (
         <div className="rpanel-apply">
           <Form.Item noStyle name="EX_TEST_CANDIDATE">
             <ApplyField pageMode={pageMode} />
           </Form.Item>
-        </div>
-      )}
-      {action === 'S' && (
-        <div className="rpanel-count-down">
-          <div className="title">남은 시간</div>
-          <div className="separator"></div>
-          <CountDownField form={form} action={action} onFinish={onFinish} />
         </div>
       )}
     </StyledTbankRightPanel>

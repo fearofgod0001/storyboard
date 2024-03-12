@@ -27,6 +27,11 @@ const StyledEditETestList = styled.div`
     display: flex;
     padding: 10px 0 0 14px;
   }
+  .switch-panel {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 14px 0 0;
+  }
 `;
 
 export default StyledEditETestList;

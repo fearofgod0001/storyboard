@@ -51,6 +51,12 @@ const StyledTbankCenterPanel = styled.div`
       }
     }
   }
+  .ttl-score {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 15px;
+    font-weight: 600;
+  }
 `;
 
 export default StyledTbankCenterPanel;
