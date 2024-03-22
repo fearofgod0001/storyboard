@@ -1,7 +1,8 @@
 import Edit from "./components/tab";
 import AntD from "./components/antdesign";
 import AddTest from "./pages/exBank/add-test";
-import EditTestBank from "./pages/exBank/edit-testbank";
+
+import TestPage from "./pages/content";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { message } from "antd";
 
@@ -30,7 +31,7 @@ function App() {
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <EditTestBank />
+      <TestPage />
     </QueryClientProvider>
   );
 }
