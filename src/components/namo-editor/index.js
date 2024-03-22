@@ -13,9 +13,14 @@ export const NamoEditor = ({ src, sender, prntMessage }) => {
     iframeWindow.postMessage(message, "*");
   };
 
-  //iframe으로 보낼 state를 채우는 함수
+  //iframe으로 보낼 메시지(state)를 채우는 함수
   const onChangeValue = (e) => {
     setIframeValue(e.target.value);
+  };
+
+  // iframe 로딩 완료 시 메시지 보내는 함수
+  const onIframeLoad = () => {
+    sendMessageToIframe(prntMessage);
   };
 
   //iframe에서 메시지를 받을 useEffect
@@ -48,9 +53,11 @@ export const NamoEditor = ({ src, sender, prntMessage }) => {
     }
   }, [pageMode]);
 
-  // iframe 로딩 완료 시 메시지 보내는 함수
-  const onIframeLoad = () => {
-    sendMessageToIframe(prntMessage);
+  //에디터 내용을 초기화 하는 함수
+  const onResetEditor = () => {
+    const iframeWindow = iframeRef.current.contentWindow;
+    const message = { type: "reset" };
+    iframeWindow.postMessage(message, "*");
   };
 
   return (
@@ -66,6 +73,7 @@ export const NamoEditor = ({ src, sender, prntMessage }) => {
         <button onClick={() => sendMessageToIframe(iframeValue)}>
           내용 보내기
         </button>
+        <button onClick={onResetEditor}>초기화</button>
       </div>
 
       <iframe src={src} id="namo" ref={iframeRef} onLoad={onIframeLoad} />
